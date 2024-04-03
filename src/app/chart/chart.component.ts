@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import Chart from 'chart.js/auto';
-import {TransactionService} from "../services/transaction.service";
-import {type} from "../model/model";
+import {type} from "../../model/model";
+import {DALService} from "../../services/dal.service";
 
 @Component({
   selector: 'app-chart',
@@ -23,7 +23,7 @@ export class ChartComponent implements OnInit {
   label = 'income'
   color = 'rgb(85,227,7)';
   isIncomeActive = true;
-  constructor(public transaction: TransactionService) {
+  constructor(public dal: DALService) {
   }
 
   ngOnInit() {
@@ -31,14 +31,15 @@ export class ChartComponent implements OnInit {
     this.initializeChart();
   }
 
-  getChartData() {
-    let transactions = this.transaction.getAllTransactions();
+  async getChartData() {
+    let transactions = await this.dal.getAllTransactions();
 
     transactions.sort((a, b) => {
       const dateA = new Date(a.date);
       const dateB = new Date(b.date);
       return dateA.getTime() - dateB.getTime();
     });
+
     transactions.forEach((item) => {
       const date = new Date(item.date);
       const day = date.getDate();

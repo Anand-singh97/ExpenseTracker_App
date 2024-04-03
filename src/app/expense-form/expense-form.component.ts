@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {ITransaction} from "../model/model";
-import {TransactionService} from "../services/transaction.service";
+import {ITransaction} from "../../model/model";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {InputComponentComponent} from "../input-component/input-component.component";
 import {TransactionListComponent} from "../transaction-list/transaction-list.component";
+import {DALService} from "../../services/dal.service";
 
 @Component({
   selector: 'app-expense-form',
@@ -21,14 +21,14 @@ export class ExpenseFormComponent implements OnInit
   // @Input() transactionType: string = '';
   expenseList: Array<ITransaction> = [];
   totalExpense: number = 0;
-  constructor(public transactionService: TransactionService)
+  constructor(public dal: DALService)
   {
 
   }
-  ngOnInit(): void
+  async ngOnInit()
   {
-    this.expenseList = this.transactionService.getExpenseList();
-    this.totalExpense = this.transactionService.getTotalExpense();
+    this.expenseList = await this.dal.getExpenseList();
+    this.totalExpense = await this.dal.getTotalExpense();
   }
 
   name = new FormControl('', [

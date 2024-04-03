@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {TransactionListComponent} from "../transaction-list/transaction-list.component";
-import {ITransaction} from "../model/model";
-import {TransactionService} from "../services/transaction.service";
+import {ITransaction} from "../../model/model";
 import {InputComponentComponent} from "../input-component/input-component.component";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {DALService} from "../../services/dal.service";
 
 @Component({
   selector: 'app-income-form',
@@ -20,13 +20,12 @@ export class IncomeFormComponent implements OnInit
 {
   @Input() transactionType: string = '';
   incomeList: Array<ITransaction> = [];
-  constructor(public transactionService: TransactionService)
+  constructor(public dal: DALService)
   {
-
   }
-  ngOnInit(): void
+  async ngOnInit()
   {
-    this.incomeList = this.transactionService.gerIncomeList();
+    this.incomeList = await this.dal.getIncomeList();
   }
 
   name = new FormControl('', [

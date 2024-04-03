@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {TransactionService} from '../services/transaction.service';
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {TransactionListComponent} from "../transaction-list/transaction-list.component";
-import {ITransaction, type} from "../model/model";
-// import _default from "chart.js/dist/plugins/plugin.tooltip";
+import {ITransaction, type} from "../../model/model";
+import {DALService} from "../../services/dal.service";
+
 @Component({
   selector: 'app-recent-history',
   standalone: true,
@@ -20,10 +20,10 @@ export class RecentHistoryComponent implements OnInit
 {
   recentTransactions: Array<ITransaction> = [];
   protected readonly type = type;
-  constructor(private transactionService: TransactionService) {
+  constructor(public dal: DALService) {
   }
 
-  ngOnInit() {
-    this.recentTransactions = this.transactionService.getRecentHistory();
+  async ngOnInit() {
+    this.recentTransactions = await this.dal.getRecentHistory();
   }
 }
