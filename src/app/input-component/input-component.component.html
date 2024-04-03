@@ -1,0 +1,10 @@
+<input [formControl]="control" [placeholder]="placeholder" [type]="type" class="form-control flex-grow-1"/>
+<ng-container *ngIf="control.touched && control.dirty">
+  <p class="text-danger" *ngIf="control.errors?.['required']">
+    {{name}} is required.
+  </p>
+  <p class="text-danger" *ngIf="control.errors?.['min']">
+    {{name}} should be greater than 1.
+  </p>
+</ng-container>
+

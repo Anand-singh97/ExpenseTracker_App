@@ -1,0 +1,23 @@
+.income-container{
+  padding: 20px;
+  border-radius: 10px;
+  background-color: rgba(235, 239, 255, 0.8);
+}
+
+.income-container {
+  width: 600px;
+}
+
+.incomeList-Container{
+  padding: 20px;
+  border-radius: 10px;
+  background-color: rgba(235, 239, 255, 0.8);
+}
+
+/* Media query for smaller screens */
+@media screen and (min-width: 700px) {
+  .income-container {
+    width: 700px;
+  }
+}
+

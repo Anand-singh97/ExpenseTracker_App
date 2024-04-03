@@ -1,0 +1,49 @@
+<div class="d-flex justify-content-center align-content-center">
+  <div class="mt-5 income-container">
+    <div class="text-center">
+      <h2>Add Income</h2>
+    </div>
+    <form [formGroup]="incomeForm">
+      <div class="mb-3">
+        <app-input-component name="title" type = "text" [control]="name" placeholder = "title"></app-input-component>
+      </div>
+      <div class="d-flex justify-content-center">
+        <div class="mb-3 d-flex gap-3">
+          <div>
+            <app-input-component name="amount" [control]="amount" type="number" placeholder="amount"></app-input-component>
+          </div>
+          <div class="d-flex gap-3 align-content-center">
+            <select [formControl]="category" class="bg-white form-control" name="category" id="category">
+<!--              <option style="color: #d8d2d2" disabled selected value= 0 >Categories</option>-->
+              <option value= 0 selected>Salary</option>
+              <option value= 1>Freelancing</option>
+              <option value= 2>Investments</option>
+              <option value= 3>Stocks</option>
+              <option value= 4>Bitcoin</option>
+              <option value= 14>Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <app-input-component type="date" name="date" [control]="date"></app-input-component>
+      </div>
+      <div class="mb-3">
+        <textarea [formControl]="comments" placeholder="Comments..." class="form-control" name="txtComment" id="txtComment" cols="30" rows="2"></textarea>
+      </div>
+      <div class="d-flex justify-content-center">
+        <button [disabled]="incomeForm.invalid" type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="incomeList-Container mt-4">
+  <h1 class="heading-history text-center">Income History</h1>
+  <div class="container summary-container" style="overflow: auto;">
+    <div class="row">
+      <app-transaction-list [transactions]="incomeList"></app-transaction-list>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,9 @@
+<div class="d-flex graph-box flex-column justify-content-center align-content-center my-5 p-3">
+  <div class="container canvas-box d-flex justify-content-center align-content-center">
+      <canvas id="canvas">{{chart}}</canvas>
+  </div>
+  <div class="container d-flex justify-content-center">
+    <button  (click)="toggleTransactionChart()" type="button" class=" toggleTransaction btn btn-outline-primary mt-2">show {{isIncomeActive ? 'expense' : 'income'}}</button>
+  </div>
+</div>
+

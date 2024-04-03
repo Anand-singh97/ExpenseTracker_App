@@ -1,0 +1,18 @@
+.analytics-card{
+  margin: 0px auto;
+  border: none;
+}
+
+h1{
+  font-size: 30px;
+}
+
+.expense-card{
+  box-shadow: 0 5px 5px rgba(246, 127, 127, 0.8);
+}
+.income-card{
+  box-shadow: 0 5px 5px rgba(142, 239, 172, 0.8);
+}
+.balance-card{
+  box-shadow: 0 5px 5px rgba(110, 146, 245, 0.8);
+}

@@ -14,13 +14,13 @@ export enum type{
 }
 
 export enum categoryOptions{
-  Salary,
-  Freelancing,
-  Investments,
-  Stocks,
-  Bitcoin,
-  BankTransfer,
-  Youtube,
+  Salary, //income
+  Freelancing, //income
+  Investments, //income
+  Stocks, //income
+  Bitcoin, //income
+  BankTransfer, //income
+  Youtube, //income
   Education,
   Groceries,
   Health,
@@ -28,5 +28,6 @@ export enum categoryOptions{
   Takeaways,
   Clothing,
   Travelling,
-  Other
+  OtherIncome,
+  OtherExpense
 }
