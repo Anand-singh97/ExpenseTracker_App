@@ -30,3 +30,31 @@
   color: black;
   font-weight: lighter;
 }
+
+.mobile-nav {
+  background-color: #ffffff;
+  position: fixed;
+  bottom: 0;
+  padding: 15px;
+  /*height: 65px;*/
+  display: flex;
+  width: 20rem;
+  border-radius: 20px;
+  justify-content: space-around;
+}
+
+.links{
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.nav-container{
+  z-index: 20;
+}
+
+
+/*@media screen and (min-width: 600px) {*/
+/*  .mobile-nav {*/
+/*    display: none;*/
+/*  }*/
+/*}*/
