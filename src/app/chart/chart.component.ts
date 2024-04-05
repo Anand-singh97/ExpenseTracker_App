@@ -2,20 +2,30 @@ import {Component, OnInit} from '@angular/core';
 import Chart from 'chart.js/auto';
 import {type} from "../../model/model";
 import {DALService} from "../../services/dal.service";
+import {Subscription} from "rxjs";
+import {JsonPipe, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-chart',
   standalone: true,
-  imports: [],
+  imports: [
+    NgIf,
+    JsonPipe
+  ],
   templateUrl: './chart.component.html',
   styleUrl: './chart.component.css'
 })
-export class ChartComponent implements OnInit {
+export class ChartComponent implements OnInit
+{
   chart: any = [];
+  currentMonthSubscription: Subscription = new Subscription();
+
+  currMonth: number = Number(localStorage.getItem('currMonth')) ?? (new Date()).getMonth();
   months = [
     "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
+  month: string = '';
   income_date: Array<string> = [];
   expense_date: Array<string> = [];
   expenses: Array<number> = [];
@@ -23,16 +33,32 @@ export class ChartComponent implements OnInit {
   label = 'income'
   color = 'rgb(85,227,7)';
   isIncomeActive = true;
-  constructor(public dal: DALService) {
+  constructor(public dal: DALService) {}
+
+  async ngOnInit()
+  {
+    this.currentMonthSubscription = this.dal.getCurrMonth().subscribe(async (value)=>{
+      this.currMonth = value;
+      this.month = this.months[this.currMonth-1];
+
+      await this.getChartData();
+      this.initializeChart();
+    })
+  }
+  ngOnDestroy(): void {
+    if (this.currentMonthSubscription) {
+      this.currentMonthSubscription.unsubscribe();
+    }
   }
 
-  ngOnInit() {
-    this.getChartData();
-    this.initializeChart();
-  }
-
-  async getChartData() {
-    let transactions = await this.dal.getAllTransactions();
+  async getChartData()
+  {
+    this.income_date = [];
+    this.expense_date = [];
+    this.expenses = [];
+    this.incomes = [];
+    let month: number = this.currMonth;
+    let transactions = await this.dal.getMonthlyTransactions(month);
 
     transactions.sort((a, b) => {
       const dateA = new Date(a.date);
@@ -82,6 +108,7 @@ export class ChartComponent implements OnInit {
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: {
             position: 'top',
@@ -94,9 +121,9 @@ export class ChartComponent implements OnInit {
           },
           title: {
             display: true,
-            text: 'Summary',
+            text: 'Monthly Transactions',
             font: {
-              size: 20,
+              size: 16,
               weight: 'bold'
             }
           }
@@ -131,5 +158,36 @@ export class ChartComponent implements OnInit {
     this.color = this.isIncomeActive ? 'rgb(85,227,7)' : 'rgba(255, 99, 132, 1)';
     this.label = this.isIncomeActive ? 'income' : 'expense';
     this.initializeChart();
+  }
+
+  async changeMonth(nextOrPrev: string)
+  {
+    let month: number =  this.currMonth;
+    if(nextOrPrev === 'next')
+    {
+      if(month >= 12)
+      {
+        month = 1;
+      }
+      else
+      {
+        month++;
+      }
+    }
+    else
+    {
+      if(month <= 1)
+      {
+        month = 12;
+      }
+      else
+      {
+        month--;
+      }
+    }
+    this.dal.updateMonth(month);
+    localStorage.setItem('currMonth', month.toString());
+    this.month = this.months[this.currMonth-1];
+    this.chart.destroy();
   }
 }

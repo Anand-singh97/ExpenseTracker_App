@@ -1,11 +1,11 @@
 <div class="d-flex form-container justify-content-center align-content-center">
-  <div class="mt-5 income-container">
+  <div class="income-container">
     <div class="text-center">
       <h2>Add Expense</h2>
     </div>
     <form [formGroup]="expenseForm">
       <div class="mb-3">
-        <app-input-component name="title" type = "text" [control]="name" placeholder = "title"></app-input-component>
+        <app-input-component name="title" type = "text" [control]="title" placeholder = "title"></app-input-component>
       </div>
       <div class="d-flex justify-content-center">
         <div class="mb-3 d-flex gap-3">
@@ -31,10 +31,12 @@
         <app-input-component type="date" name="date" [control]="date"></app-input-component>
       </div>
       <div class="mb-3">
-        <textarea [formControl]="comments" placeholder="Comments..." class="form-control" name="txtComment" id="txtComment" cols="30" rows="2"></textarea>
+        <textarea [formControl]="comments" placeholder="Comments..." class="form-control"
+                  name="txtComment" id="txtComment" cols="30" rows="2"></textarea>
       </div>
       <div class="d-flex justify-content-center">
-        <button [disabled]="expenseForm.invalid" type="submit" class="btn btn-primary">Submit</button>
+        <button [disabled]="expenseForm.invalid" (click)="addTransaction()"
+                type="submit" class="btn btn-primary">Submit</button>
       </div>
     </form>
   </div>

@@ -14,6 +14,8 @@ import {ChartComponent} from "../chart/chart.component";
   templateUrl: './analytics.component.html',
   styleUrl: './analytics.component.css'
 })
-export class AnalyticsComponent {
+export class AnalyticsComponent
+{
+
 
 }

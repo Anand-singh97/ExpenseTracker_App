@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {TransactionService} from "./transaction.service";
 import {ITransaction, type} from "../model/model";
+import {BehaviorSubject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -8,19 +9,29 @@ import {ITransaction, type} from "../model/model";
 
 export class DALService
 {
-
+  private monthSubject =
+    new BehaviorSubject<number>(new Date().getMonth()+1);
   constructor()
   {
 
   }
+  updateMonth(month: number){
+    this.monthSubject.next(month);
+  }
+  getCurrMonth(){
+    return this.monthSubject.asObservable();
+  }
 
-  async getIncomeList(): Promise<ITransaction[]>{
+  async getIncomeList(): Promise<ITransaction[]>
+  {
     try
     {
       const tr: Array<ITransaction> = await this.getAllTransactions();
-      return tr.filter((item)=>{
-        return item.transactionType = type.income;
+      let filteredIncomeList = tr.filter((item)=>{
+        return item.transactionType === type.income;
       });
+      return filteredIncomeList
+        .sort((a, b)=> a.date > b.date ? -1 : 1);
     }
     catch(e)
     {
@@ -29,13 +40,15 @@ export class DALService
     }
   }
 
-  async getExpenseList(): Promise<ITransaction[]>{
+  async getExpenseList(): Promise<ITransaction[]>
+  {
     try
     {
       const tr: Array<ITransaction> = await this.getAllTransactions();
-      return tr.filter((item)=>{
-        return item.transactionType = type.expense;
+      let filteredExpenseList =  tr.filter((item)=>{
+        return item.transactionType === type.expense;
       });
+      return filteredExpenseList.sort((a, b)=> a.date > b.date ? -1 : 1);
     }
     catch(e)
     {
@@ -44,12 +57,12 @@ export class DALService
     }
   }
 
-  async getTotalIncome(): Promise<number>
+  async getTotalIncome(month: number): Promise<number>
   {
     let total: number = 0;
     try
     {
-      const transactions: ITransaction[] = await this.getAllTransactions();
+      const transactions: ITransaction[] = await this.getMonthlyTransactions(month);
       console.log(transactions);
       let selectedMonth: number = Number(localStorage.getItem('currMonth'));
       selectedMonth = selectedMonth ? selectedMonth : ((new Date()).getMonth() + 1);
@@ -69,12 +82,12 @@ export class DALService
     }
   }
 
-  async getTotalExpense(): Promise<number>
+  async getTotalExpense(month: number): Promise<number>
   {
     let total: number = 0;
     try
     {
-      const transactions: ITransaction[] = await this.getAllTransactions();
+      const transactions: ITransaction[] = await this.getMonthlyTransactions(month);
       let selectedMonth: number = Number(localStorage.getItem('currMonth'));
       selectedMonth = selectedMonth ? selectedMonth : ((new Date()).getMonth() + 1);
 
@@ -93,10 +106,8 @@ export class DALService
     }
   }
 
-  async getRecentHistory(): Promise<ITransaction[]>
+  async getRecentHistory(selectedMonth: number): Promise<ITransaction[]>
   {
-    let selectedMonth = Number(localStorage.getItem('currMonth'));
-    selectedMonth = selectedMonth ? selectedMonth : ((new Date()).getMonth() + 1);
     try
     {
       const transactions: Array<ITransaction> = await this.getAllTransactions();
@@ -154,4 +165,95 @@ export class DALService
       };
     });
   }
+
+  async select(id: number): Promise<ITransaction | null> { // Return type should be Promise<ITransaction | null> to handle cases where transaction is not found
+    return new Promise<ITransaction | null>((resolve, reject) => {
+      if (!TransactionService.db) {
+        reject("Database is not initialized.");
+        return;
+      }
+
+      const transaction = TransactionService.db.transaction(["transactions"], "readonly"); // Use readonly mode for transaction as you're not performing any writes
+
+      transaction.oncomplete = () => {
+        // Transaction completed successfully
+      };
+
+      transaction.onerror = (event) => {
+        console.error("Error: error in selecting a transaction ", event);
+        reject(event);
+      };
+
+      const transactionStore = transaction.objectStore("transactions");
+      const request = transactionStore.get(id);
+
+      request.onsuccess = (event) => {
+        const result = (event.target as IDBRequest).result;
+        if(result)
+        {
+          resolve(result);
+        }
+        else
+        {
+          reject(new Error('Review not found.'))
+        }
+      };
+
+      request.onerror = (event) => {
+        console.error("Error finding transaction", event);
+        reject(event);
+      };
+    });
+  }
+
+
+  async getMonthlyTransactions(month: number): Promise<ITransaction[]>
+  {
+    try
+    {
+      const transactions = await this.getAllTransactions();
+       return transactions.filter((item)=>{
+        return item.date.getMonth() + 1 === month;
+      });
+    }
+    catch(e)
+    {
+      console.log("error fetching monthly transactions: ", e);
+      throw e;
+    }
+  }
+
+  async insert(newTransaction: ITransaction) {
+    return new Promise<void>((resolve, reject) => {
+      if (!TransactionService.db) {
+        reject("Database is not initialized.");
+        return;
+      }
+
+      const transaction = TransactionService.db.transaction(["transactions"], "readwrite");
+
+      transaction.oncomplete = () => {
+        console.log("Success: insert transaction successful");
+        resolve();
+      };
+
+      transaction.onerror = (event) => {
+        console.error("Error: error in insert transaction ", event);
+        reject(event); // Reject the promise if there's an error
+      };
+
+      const transactionStore = transaction.objectStore("transactions");
+      const request = transactionStore.add(newTransaction);
+
+      request.onsuccess = () => {
+        console.log("New transaction added successfully");
+      };
+
+      request.onerror = (event) => {
+        console.error("Error adding new transaction", event);
+        reject(event); // Reject the promise if there's an error adding the transaction
+      };
+    });
+  }
+
 }

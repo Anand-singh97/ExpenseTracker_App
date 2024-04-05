@@ -1,6 +1,15 @@
 <h1 class="heading-history text-center">Recent History</h1>
 <div class="container summary-container" style="overflow: auto;">
-    <div class="row">
+    <div *ngIf="recentTransactions.length > 0; else noRecentTransactions" class="row">
       <app-transaction-list [transactions]="recentTransactions"></app-transaction-list>
     </div>
+    <ng-template #noRecentTransactions>
+      <p class="text-center mt-5 fw-bolder">No transactions recorded for <span class="text-info">{{months[currMonth-1]}}</span> </p>
+      <div class="d-flex gap-3 justify-content-center">
+        <button type="button" class="toggleTransaction btn
+        btn-outline-primary mt-2" routerLink="/transaction/income">Add Income</button>
+        <button type="button" class="toggleTransaction btn
+        btn-outline-primary mt-2" routerLink="/transaction/expense">Add Expense</button>
+      </div>
+    </ng-template>
 </div>

@@ -48,7 +48,8 @@ export class TransactionService {
         console.log("Upgrade needed for database");
         TransactionService.db = (event.target as IDBOpenDBRequest).result;
 
-        if (! TransactionService.db.objectStoreNames.contains("transactions")) {
+        if (! TransactionService.db.objectStoreNames.contains("transactions"))
+        {
           const transactions =  TransactionService.db.createObjectStore("transactions", {
             keyPath: "id",
             autoIncrement: true
