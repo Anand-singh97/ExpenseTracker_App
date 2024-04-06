@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
-import {JsonPipe, NgIf} from "@angular/common";
+import {JsonPipe, NgClass, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-input-component',
@@ -8,7 +8,8 @@ import {JsonPipe, NgIf} from "@angular/common";
   imports: [
     ReactiveFormsModule,
     NgIf,
-    JsonPipe
+    JsonPipe,
+    NgClass
   ],
   templateUrl: './input-component.component.html',
   styleUrl: './input-component.component.css'
@@ -20,4 +21,5 @@ export class InputComponentComponent
   @Input() placeholder: string = "";
   @Input() name: string = "";
   @Input() format: string = "";
+  @Input() readonly :boolean = false;
 }

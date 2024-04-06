@@ -1,0 +1,7 @@
+.about-box
+{
+  background-image: url("../../assets/moroccan-flower.png");
+  height: 88vh;
+  border-radius: 20px;
+  padding: 20px;
+}

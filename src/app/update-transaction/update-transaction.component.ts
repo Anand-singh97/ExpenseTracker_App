@@ -44,7 +44,7 @@ export class UpdateTransactionComponent implements OnInit
             'Update Income' : 'Update Expense'
           this.title.setValue(this.selectedIncome!.title);
           this.amount.setValue(this.selectedIncome!.amount.toString());
-          this.category.setValue(this.selectedIncome!.category);
+          this.category.setValue(1);
           this.date.setValue(new Date(this.selectedIncome.date).toLocaleDateString());
           this.comments.setValue(this.selectedIncome!.comment.toString());
         }

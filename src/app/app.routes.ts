@@ -5,6 +5,7 @@ import {ExpenseFormComponent} from "./expense-form/expense-form.component";
 import {TransactionsPageComponent} from "./transactions-page/transactions-page.component";
 import {UpdateTransactionComponent} from "./update-transaction/update-transaction.component";
 import {DeleteTransactionComponent} from "./delete-transaction/delete-transaction.component";
+import {AboutPageComponent} from "./about-page/about-page.component";
 export const routes: Routes = [
   {path:'home', component: HomePageComponent},
   {path:'', component: HomePageComponent},
@@ -17,5 +18,6 @@ export const routes: Routes = [
       { path: 'expense', component: ExpenseFormComponent }
     ]
   },
-  {path:'deleteTransaction/:id', component: DeleteTransactionComponent}
+  {path:'deleteTransaction/:id', component: DeleteTransactionComponent},
+  {path:'about', component: AboutPageComponent}
 ];

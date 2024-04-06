@@ -1,4 +1,4 @@
-<input [formControl]="control" [placeholder]="placeholder" [type]="type" class="form-control flex-grow-1"/>
+<input [formControl]="control" [readonly]="readonly" [placeholder]="placeholder" [type]="type" class="form-control flex-grow-1"/>
 <ng-container *ngIf="control.touched && control.dirty">
   <p class="text-danger" *ngIf="control.errors?.['required']">
     {{name}} is required.

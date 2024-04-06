@@ -11,9 +11,8 @@ export class DALService
 {
   private monthSubject =
     new BehaviorSubject<number>(new Date().getMonth()+1);
-  constructor()
-  {
-  }
+  constructor() {}
+
   updateMonth(month: number){
     this.monthSubject.next(month);
   }
@@ -301,9 +300,6 @@ export class DALService
           reject();
         }
       }
-
-
-
     })
   }
 }

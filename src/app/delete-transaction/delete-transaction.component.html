@@ -5,44 +5,45 @@
     </div>
     <form [formGroup] ="transactionForm">
       <div class="mb-3">
-        <app-input-component name="title" type = "text" [control]="title"
+        <app-input-component [readonly] = true name="title" type = "text" [control]="title"
                              placeholder = "title"></app-input-component>
       </div>
       <div class="d-flex justify-content-center">
         <div class="mb-3 d-flex gap-3">
           <div>
-            <app-input-component name="amount" [control]="amount" type="number"
+            <app-input-component [readonly] = true name="amount" [control]="amount" type="number"
                                  placeholder="amount"></app-input-component>
           </div>
           <div class="d-flex gap-3 align-content-center">
-            <select [formControl]="category" class="bg-white form-control" name="category" id="category">
+            <select [formControl]="category" style="background-color: #efefef"
+                    class="form-control" name="category" id="category">
               <ng-container *ngIf="selectedIncome?.transactionType === type.income; else expenseOptions">
-                <option value="0" selected>Salary</option>
-                <option value="1">Freelancing</option>
-                <option value="2">Investments</option>
-                <option value="3">Stocks</option>
-                <option value="4">Bitcoin</option>
-                <option value="14">Other</option>
+                <option [value]="0" [selected]="selectedIncome?.category === 0">Salary</option>
+                <option [value]="1" [selected]="selectedIncome?.category === 1">Freelancing</option>
+                <option [value]="2" [selected]="selectedIncome?.category === 2">Investments</option>
+                <option [value]="3" [selected]="selectedIncome?.category === 3">Stocks</option>
+                <option [value]="4" [selected]="selectedIncome?.category === 4">Bitcoin</option>
+                <option [value]="14" [selected]="selectedIncome?.category === 14">Other</option>
               </ng-container>
               <ng-template #expenseOptions>
-                <option value="7" selected>Education</option>
-                <option value="8">Groceries</option>
-                <option value="9">Health</option>
-                <option value="10">Subscriptions</option>
-                <option value="11">Takeaways</option>
-                <option value="12">Clothing</option>
-                <option value="13">Travelling</option>
-                <option value="15">Other</option>
+                <option [value]="7" [selected]="selectedIncome?.category === 7">Education</option>
+                <option [value]="8" [selected]="selectedIncome?.category === 8">Groceries</option>
+                <option [value]="9" [selected]="selectedIncome?.category === 9">Health</option>
+                <option [value]="10" [selected]="selectedIncome?.category === 10">Subscriptions</option>
+                <option [value]="11" [selected]="selectedIncome?.category === 11">Takeaways</option>
+                <option [value]="12" [selected]="selectedIncome?.category === 12">Clothing</option>
+                <option [value]="13" [selected]="selectedIncome?.category === 13">Travelling</option>
+                <option [value]="15" [selected]="selectedIncome?.category === 15">Other</option>
               </ng-template>
             </select>
           </div>
         </div>
       </div>
       <div class="mb-3">
-        <app-input-component type="date" name="date" [control]="date"></app-input-component>
+        <app-input-component [readonly]="true" type="date" name="date" [control]="date"></app-input-component>
       </div>
       <div class="mb-3">
-        <textarea [formControl]="comments" placeholder="Comments..." class="form-control"
+        <textarea [readonly]="true" [formControl]="comments" placeholder="Comments..." class="form-control"
                   name="txtComment" id="txtComment" cols="30" rows="2"></textarea>
       </div>
       <div class="d-flex justify-content-center gap-5">

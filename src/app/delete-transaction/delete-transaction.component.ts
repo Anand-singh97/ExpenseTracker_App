@@ -24,9 +24,7 @@ export class DeleteTransactionComponent implements OnInit
   selectedIncome: ITransaction | null | undefined;
   transactionForm: FormGroup = new FormGroup<any>('');
   protected readonly type = type;
-  constructor(public dal: DALService, public route: ActivatedRoute, public router: Router)
-  {
-  }
+  constructor(public dal: DALService, public route: ActivatedRoute, public router: Router) {}
   async ngOnInit()
   {
     const id: number = Number(this.route.snapshot.paramMap.get("id"));
@@ -37,11 +35,12 @@ export class DeleteTransactionComponent implements OnInit
         this.selectedIncome = await this.dal.select(id);
         if(this.selectedIncome)
         {
+          console.log((this.selectedIncome!.category));
           this.formTitle = this.selectedIncome.transactionType === type.income ?
             'Are you sure, you want to delete this Income?' : 'Are you sure, you want to delete this Expense?'
           this.title.setValue(this.selectedIncome!.title);
           this.amount.setValue(this.selectedIncome!.amount.toString());
-          this.category.setValue(this.selectedIncome!.category);
+          this.category.setValue(Number(this.selectedIncome!.category));
           this.date.setValue(new Date(this.selectedIncome.date).toLocaleDateString());
           this.comments.setValue(this.selectedIncome!.comment.toString());
         }
@@ -62,7 +61,7 @@ export class DeleteTransactionComponent implements OnInit
   title = new FormControl('', [Validators.required]);
   amount = new FormControl('',
     [Validators.required, Validators.min(1)]);
-  category = new FormControl(0);
+  category = new FormControl({value:0, disabled:true});
   date = new FormControl(new Date().toLocaleDateString(), [Validators.required]);
   comments = new FormControl('');
 
