@@ -1,5 +1,5 @@
 .analytics-card{
-  margin: 0px auto;
+  margin: 0 auto;
   border: none;
 }
 
@@ -12,11 +12,29 @@
   width: 5%;
 }
 
-/*.incomeList-Container{*/
-/*  padding: 20px;*/
-/*  border-radius: 10px;*/
-/*  background-color: rgba(235, 239, 255, 0.8);*/
-/*}*/
+.bin{
+  position: absolute;
+  top: 20px;
+  right: -35px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  padding: 10px 5px 10px 5px;
+  color: #3398e3;
+  background-color: #e3dede;
+  z-index: 0;
+}
+
+.edit{
+  position: absolute;
+  top: 85px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  padding: 10px 5px 10px 5px;
+  right: -35px;
+  color: #3398e3;
+  background-color: #e3dede;
+  z-index: 0;
+}
 
 /* Media query for smaller screens */
 @media screen and (min-width: 700px) {

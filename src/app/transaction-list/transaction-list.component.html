@@ -1,33 +1,57 @@
 <div class="row">
   <div *ngFor="let item of transactions" class="col-12">
-    <a style="text-decoration: none" [routerLink] = "item.transactionType === type.income ?
-      ['/transaction/income', item.id] : ['/transaction/expense', item.id]">
-      <div class="history-box analytics-card card p-3 w-75 mb-3">
+      <div class="history-box analytics-card card p-3 w-75 mb-3 position-relative">
         <div class="d-flex flex-column align-items-center gap-2">
           <div class="d-flex flex-row align-items-center gap-3">
             <h6 style="border-radius: 20px; padding: 10px; background-color: #f1a9c2">
               {{ item.title }}
             </h6>
-            <h6 class="fw-semibold" [ngClass]="{'text-success': item.transactionType === type.income, 'text-danger': item.transactionType === type.expense}">
+            <h6 class="fw-semibold" [ngClass]="{'text-success': item.transactionType === type.income,
+            'text-danger': item.transactionType === type.expense}">
               {{ item.transactionType === type.income ? '+' : '-' }}${{ item.amount }}
             </h6>
           </div>
           <div class="d-flex align-items-center gap-2">
-            <svg class="calendarIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-              <path d="M96 32V64H48C21.5 64 0 85.5 0 112v48H448V112c0-26.5-21.5-48-48-48H352V32c0-17.7-14.3-32-32-32s-32 14.3-32 32V64H160V32c0-17.7-14.3-32-32-32S96 14.3 96 32zM448 192H0V464c0 26.5 21.5 48 48 48H400c26.5 0 48-21.5 48-48V192z"/>
+            <svg  class="calendarIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+              <path d="M96 32V64H48C21.5 64 0 85.5 0 112v48H448V112c0-26.5-21.5-48-48-48H352V32c0-17.7-14.3-32-32-32s-32
+              14.3-32 32V64H160V32c0-17.7-14.3-32-32-32S96 14.3 96 32zM448 192H0V464c0
+              26.5 21.5 48 48 48H400c26.5 0 48-21.5 48-48V192z"/>
             </svg>
             <p class="mb-0">{{ item.date | date:'yyyy-MM-dd' }}</p>
           </div>
         </div>
+
         <div class="d-flex flex-column gap-2 mt-3">
           <div class="d-flex gap-2 align-items-center">
             <svg class="calendarIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-              <path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1 16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/>
+              <path d="M64 0C28.7 0 0 28.7 0 64V352c0 35.3 28.7 64 64 64h96v80c0 6.1 3.4 11.6 8.8 14.3s11.9 2.1
+              16.8-1.5L309.3 416H448c35.3 0 64-28.7 64-64V64c0-35.3-28.7-64-64-64H64z"/>
             </svg>
             <p class="mb-0">{{ item.comment }}</p>
           </div>
         </div>
+        <a style="text-decoration: none" [routerLink] = "['/deleteTransaction', item.id]">
+          <div class="bin">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+              <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0
+            1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+              <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1
+            1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1
+            1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+            </svg>
+          </div>
+        </a>
+
+        <a style="text-decoration: none" [routerLink] = "['/updateTransaction', item.id]">
+          <div class="edit">
+              <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75
+                2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1
+                0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z"/>
+              </svg>
+          </div>
+        </a>
       </div>
-    </a>
   </div>
 </div>

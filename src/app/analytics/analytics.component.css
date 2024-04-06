@@ -13,3 +13,8 @@
   background-color: #efecec;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
+
+.carousel-control-prev, .carousel-control-next{
+  height: fit-content;
+  margin: auto 0;
+}

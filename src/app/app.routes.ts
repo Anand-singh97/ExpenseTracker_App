@@ -3,11 +3,12 @@ import {HomePageComponent} from "./home-page/home-page.component";
 import {IncomeFormComponent} from "./income-form/income-form.component";
 import {ExpenseFormComponent} from "./expense-form/expense-form.component";
 import {TransactionsPageComponent} from "./transactions-page/transactions-page.component";
+import {UpdateTransactionComponent} from "./update-transaction/update-transaction.component";
+import {DeleteTransactionComponent} from "./delete-transaction/delete-transaction.component";
 export const routes: Routes = [
   {path:'home', component: HomePageComponent},
   {path:'', component: HomePageComponent},
-  // {path:'transaction/income/:id', component: IncomeFormComponent},
-  // {path:'transaction/expense/:id', component: ExpenseFormComponent},
+  {path:'updateTransaction/:id', component: UpdateTransactionComponent},
   {
     path: 'transaction',
     component: TransactionsPageComponent,
@@ -15,5 +16,6 @@ export const routes: Routes = [
       { path: 'income', component: IncomeFormComponent },
       { path: 'expense', component: ExpenseFormComponent }
     ]
-  }
+  },
+  {path:'deleteTransaction/:id', component: DeleteTransactionComponent}
 ];

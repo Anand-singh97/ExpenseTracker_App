@@ -21,6 +21,7 @@ export enum categoryOptions{
   Bitcoin, //income
   BankTransfer, //income
   Youtube, //income
+  OtherIncome, //income
   Education,
   Groceries,
   Health,
@@ -28,7 +29,6 @@ export enum categoryOptions{
   Takeaways,
   Clothing,
   Travelling,
-  OtherIncome,
   OtherExpense
 }
 

@@ -5,10 +5,8 @@
 }
 
 .incomeList-Container{
-  padding: 20px 0 20px 0;
+  padding: 20px;
   border-radius: 10px;
-  background-color: #fdf6fa;
-  width: 85%;
 }
 
 /* Media query for smaller screens */
@@ -20,11 +18,5 @@
 
 .summary-container{
   height: 380px;
-  width: fit-content;
-}
-
-.income-main-Container{
-  background-color: #f8f5f5;
-  border-radius: 20px;
 }
 

@@ -13,7 +13,6 @@ export class DALService
     new BehaviorSubject<number>(new Date().getMonth()+1);
   constructor()
   {
-
   }
   updateMonth(month: number){
     this.monthSubject.next(month);
@@ -63,7 +62,6 @@ export class DALService
     try
     {
       const transactions: ITransaction[] = await this.getMonthlyTransactions(month);
-      console.log(transactions);
       let selectedMonth: number = Number(localStorage.getItem('currMonth'));
       selectedMonth = selectedMonth ? selectedMonth : ((new Date()).getMonth() + 1);
 
@@ -256,4 +254,56 @@ export class DALService
     });
   }
 
+  async update(tr: ITransaction): Promise<void>
+  {
+    return new Promise((resolve, reject) => {
+      if(!TransactionService.db){
+        reject('Database not initialized');
+      }
+      else
+      {
+        const transaction = TransactionService.db.transaction(["transactions"], "readwrite");
+        transaction.onerror = (event) => console.log("Error: error in update transaction " + event);
+
+        const transactionStore = transaction.objectStore("transactions");
+
+        const req = transactionStore.put(tr);
+        req.onsuccess = ()=>{
+          console.log('Success: review updated successfully');
+          resolve();
+        }
+        req.onerror = (event)=>{
+          console.log(`Error: error in update ${event}`);
+          reject(event);
+        }
+      }
+    });
+  }
+
+  async delete(id: number): Promise<void>{
+    return new Promise((resolve, reject)=>{
+      if(!TransactionService.db)
+      {
+        reject('Database not initialized');
+      }
+      else
+      {
+        const transaction = TransactionService.db.transaction(['transactions'], 'readwrite');
+        transaction.onerror = (event)=>console.log('Error in delete transaction: ', event);
+        const transactionStore = transaction.objectStore('transactions');
+        const req = transactionStore.delete(id);
+        req.onsuccess = ()=>{
+          console.log('transaction deleted successfully');
+          resolve();
+        }
+        req.onerror = ()=>{
+          console.log('error deleting transaction');
+          reject();
+        }
+      }
+
+
+
+    })
+  }
 }
