@@ -10,7 +10,8 @@
       <div class="d-flex justify-content-center">
         <div class="mb-3 d-flex gap-3">
           <div>
-            <app-input-component name="amount" [control]="amount" type="number" placeholder="amount"></app-input-component>
+            <app-input-component name="amount" [control]="amount" type="number"
+                                 placeholder="amount"></app-input-component>
           </div>
           <div class="d-flex gap-3 align-content-center">
             <select [formControl]="category" class="bg-white form-control" name="category" id="category">
@@ -32,6 +33,9 @@
       <div class="mb-3">
         <app-camera [clearImg]="isFormSubmitted" (uploadedImg)="onImageUpload($event)"></app-camera>
       </div>
+      <div>
+        <app-location [lat]="" (positionData)="onGetLocation_Click($event)"></app-location>
+      </div>
       <div class="mb-3">
         <textarea [formControl]="comments" placeholder="Comments..." class="form-control"
                   name="txtComment" id="txtComment" cols="30" rows="2"></textarea>
@@ -48,7 +52,8 @@
   <div class="d-flex justify-content-end mx-3">
     <div class=" mt-3 w-50 gap-3 align-content-center justify-content-center">
       <label for="sort">Sort By</label>
-      <select [(ngModel)]="selectedSortOption" (ngModelChange)="sortTransactions()" id="sort" class="bg-white form-control" name="sort">
+      <select [(ngModel)]="selectedSortOption" (ngModelChange)="sortTransactions()"
+              id="sort" class="bg-white form-control" name="sort">
         <option [value]="1">Price (High to Low)</option>
         <option [value]="2">Price (Low to High)</option>
         <option [value]="3">Date (Most recent)</option>
@@ -67,4 +72,3 @@
     </div>
   </div>
 </div>
-

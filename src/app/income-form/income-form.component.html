@@ -34,6 +34,9 @@
       <div class="mb-3">
         <app-camera [clearImg]="isFormSubmitted" (uploadedImg)="onImageUpload($event)"></app-camera>
       </div>
+      <div>
+        <app-location (positionData)="onGetLocation_Click($event)"></app-location>
+      </div>
       <div class="mb-3">
         <textarea [formControl]="comments" placeholder="Comments..." class="form-control" name="txtComment" id="txtComment" cols="30" rows="2"></textarea>
       </div>

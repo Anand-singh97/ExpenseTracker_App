@@ -22,7 +22,8 @@ export class CameraComponent
   {
     this.uploadedImg.emit(this.imgsrc);
   }
-  onCapturePhotoClick() {
+  onCapturePhotoClick()
+  {
     this.cameraService.capturePhoto().then(data=>{
       this.imgsrc = data
       this.sendImage();
@@ -31,7 +32,8 @@ export class CameraComponent
     });
   }
 
-  onLoadFromLibraryClick(){
+  onLoadFromLibraryClick()
+  {
     this.cameraService.loadPhotoFromLibrary().then(data=>{
       this.imgsrc = data;
       this.sendImage();

@@ -47,6 +47,9 @@
       <div class="mb-3">
         <app-camera [isDeletePageActive]="true" [alreadyUploadedImg]="selectedIncome?.photo"></app-camera>
       </div>
+      <div>
+        <app-location [isDeletePageActive]="true" [lat]="selectedIncome?.lat" [lon]="selectedIncome?.lon"></app-location>
+      </div>
       <div class="mb-3">
         <textarea [readonly]="true" [formControl]="comments" placeholder="Comments..." class="form-control"
                   name="txtComment" id="txtComment" cols="30" rows="2"></textarea>

@@ -6,6 +6,7 @@ import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {DALService} from "../services/dal.service";
 import {ActivatedRoute} from "@angular/router";
 import {CameraComponent} from "../camera/camera.component";
+import {LocationComponent} from "../location/location.component";
 
 @Component({
   selector: 'app-income-form',
@@ -15,7 +16,8 @@ import {CameraComponent} from "../camera/camera.component";
     InputComponentComponent,
     ReactiveFormsModule,
     FormsModule,
-    CameraComponent
+    CameraComponent,
+    LocationComponent
   ],
   templateUrl: './income-form.component.html',
   styleUrl: './income-form.component.css'
@@ -29,6 +31,8 @@ export class IncomeFormComponent implements OnInit
   selectedSortOption: number = 3;
   imgSrc: string = '';
   isFormSubmitted: boolean = false;
+  lat: any;
+  lon: any
 
   constructor(public dal: DALService, public route: ActivatedRoute) {}
 
@@ -44,6 +48,7 @@ export class IncomeFormComponent implements OnInit
       }
       catch(e)
       {
+        console.log(e);
       }
     }
 
@@ -76,7 +81,9 @@ export class IncomeFormComponent implements OnInit
         category: Number(this.incomeForm.value.category),
         date: transactionDate,
         comment: this.incomeForm.value.comments!,
-        photo: this.imgSrc != '' ? this.imgSrc : undefined
+        photo: this.imgSrc != '' ? this.imgSrc : undefined,
+        lat: this.lat ? this.lat : undefined,
+        lon: this.lon ? this.lon : undefined
       };
       try
       {
@@ -116,10 +123,12 @@ export class IncomeFormComponent implements OnInit
         break;
     }
   }
-
   onImageUpload($event : string)
   {
     this.imgSrc = $event;
-
+  }
+  onGetLocation_Click($event: any){
+    this.lat = $event.lat;
+    this.lon = $event.lon;
   }
 }

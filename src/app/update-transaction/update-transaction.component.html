@@ -44,6 +44,9 @@
       <div class="mb-3">
         <app-camera (uploadedImg)="onImageUpload($event)" [alreadyUploadedImg]="selectedIncome?.photo" ></app-camera>
       </div>
+      <div>
+        <app-location [lat]="selectedIncome?.lat" [lon]="selectedIncome?.lon" (positionData)="onGetLocation_Click($event)"></app-location>
+      </div>
       <div class="mb-3">
         <textarea [formControl]="comments" placeholder="Comments..." class="form-control"
                   name="txtComment" id="txtComment" cols="30" rows="2"></textarea>

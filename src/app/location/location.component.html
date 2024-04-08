@@ -1,0 +1,12 @@
+<div class="container">
+  <div class="d-flex gap-3 align-content-center">
+    <div class="d-flex gap-2 flex-column">
+      <input readonly [ngModel]="lat" placeholder="latitude" id="lat" name="lat" class="form-control flex-grow-1"/>
+      <input readonly [ngModel]="lon" placeholder="longitude" id="lon" name="lon" class="form-control flex-grow-1"/>
+    </div>
+    <div *ngIf="!isDeletePageActive" class="d-flex align-content-center">
+      <button style="margin: auto 0" class="btn btn-primary h-75" (click)="getLocationOnclick()">Get location</button>
+    </div>
+  </div>
+  <br>
+</div>

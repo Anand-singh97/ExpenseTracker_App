@@ -6,6 +6,7 @@ import {ITransaction, type} from "../../model/model";
 import {DALService} from "../services/dal.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CameraComponent} from "../camera/camera.component";
+import {LocationComponent} from "../location/location.component";
 
 @Component({
   selector: 'app-delete-transaction',
@@ -15,7 +16,8 @@ import {CameraComponent} from "../camera/camera.component";
     InputComponentComponent,
     NgIf,
     ReactiveFormsModule,
-    CameraComponent
+    CameraComponent,
+    LocationComponent
   ],
   templateUrl: './delete-transaction.component.html',
   styleUrl: './delete-transaction.component.css'

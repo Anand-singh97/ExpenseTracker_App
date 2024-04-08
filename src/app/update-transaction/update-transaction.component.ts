@@ -7,6 +7,7 @@ import {DALService} from "../services/dal.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {JsonPipe, NgIf} from "@angular/common";
 import {CameraComponent} from "../camera/camera.component";
+import {LocationComponent} from "../location/location.component";
 
 @Component({
   selector: 'app-update-transaction',
@@ -17,7 +18,8 @@ import {CameraComponent} from "../camera/camera.component";
     TransactionListComponent,
     NgIf,
     JsonPipe,
-    CameraComponent
+    CameraComponent,
+    LocationComponent
   ],
   templateUrl: './update-transaction.component.html',
   styleUrl: './update-transaction.component.css'
@@ -29,6 +31,8 @@ export class UpdateTransactionComponent implements OnInit
   transactionForm: FormGroup = new FormGroup<any>('');
   protected readonly type = type;
   newlyUploadedImg: string = '';
+  lat: string = ''
+  lon: string = ''
 
   constructor(public dal: DALService, public route: ActivatedRoute, public router: Router) {}
 
@@ -42,13 +46,15 @@ export class UpdateTransactionComponent implements OnInit
         this.selectedIncome = await this.dal.select(id);
         if(this.selectedIncome)
         {
+          console.log(this.selectedIncome.category);
+
           const selectedDate = this.selectedIncome.date;
           const formattedDate = selectedDate.toISOString().split('T')[0];
           this.formTitle = this.selectedIncome.transactionType === type.income ?
             'Update Income' : 'Update Expense'
           this.title.setValue(this.selectedIncome!.title);
           this.amount.setValue(this.selectedIncome!.amount.toString());
-          this.category.setValue(1);
+          this.category.setValue(this.selectedIncome.category);
           this.date.setValue(formattedDate);
           this.comments.setValue(this.selectedIncome!.comment.toString());
         }
@@ -62,6 +68,7 @@ export class UpdateTransactionComponent implements OnInit
       }
       catch (e)
       {
+        console.log(e);
       }
     }
   }
@@ -90,7 +97,9 @@ export class UpdateTransactionComponent implements OnInit
           date: transactionDate,
           comment: this.transactionForm.value.comments!,
           photo: this.newlyUploadedImg != '' ? this.newlyUploadedImg : this.selectedIncome?.photo ?
-            this.selectedIncome.photo : undefined
+            this.selectedIncome.photo : undefined,
+          lat: this.lat != '' ? this.lat : this.selectedIncome?.lat ? this.selectedIncome.lat : undefined,
+          lon: this.lon != '' ? this.lon : this.selectedIncome?.lon ? this.selectedIncome.lon : undefined
         };
         await this.dal.update(newIncome);
         await this.navigate();
@@ -113,5 +122,11 @@ export class UpdateTransactionComponent implements OnInit
 
   onImageUpload($event: string){
     this.newlyUploadedImg = $event;
+  }
+
+  onGetLocation_Click($event: any)
+  {
+    this.lat = $event.lat;
+    this.lon = $event.lon;
   }
 }

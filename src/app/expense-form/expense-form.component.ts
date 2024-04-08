@@ -6,6 +6,7 @@ import {TransactionListComponent} from "../transaction-list/transaction-list.com
 import {DALService} from "../services/dal.service";
 import {Subscription} from "rxjs";
 import {CameraComponent} from "../camera/camera.component";
+import {LocationComponent} from "../location/location.component";
 
 @Component({
   selector: 'app-expense-form',
@@ -15,7 +16,8 @@ import {CameraComponent} from "../camera/camera.component";
     ReactiveFormsModule,
     TransactionListComponent,
     FormsModule,
-    CameraComponent
+    CameraComponent,
+    LocationComponent
   ],
   templateUrl: './expense-form.component.html',
   styleUrl: './expense-form.component.css'
@@ -28,6 +30,8 @@ export class ExpenseFormComponent implements OnInit {
   selectedSortOption: number = 3;
   imgSrc: string = '';
   isFormSubmitted: boolean = false;
+  lat: any;
+  lon: any
 
   constructor(public dal: DALService) {}
 
@@ -44,7 +48,7 @@ export class ExpenseFormComponent implements OnInit {
   amount = new FormControl('',
     [Validators.required, Validators.min(1)])
 
-  category = new FormControl(8,);
+  category = new FormControl(8);
 
   date = new FormControl(new Date().toLocaleDateString('en-CA').split('T')[0], [Validators.required]);
 
@@ -69,7 +73,9 @@ export class ExpenseFormComponent implements OnInit {
         category: Number(this.expenseForm.value.category),
         date: transactionDate,
         comment: this.expenseForm.value.comments!,
-        photo: this.imgSrc != '' ? this.imgSrc : undefined
+        photo: this.imgSrc != '' ? this.imgSrc : undefined,
+        lat: this.lat ? this.lat : undefined,
+        lon: this.lon ? this.lon : undefined
       };
       try {
         await this.dal.insert(newExpense);
@@ -107,5 +113,11 @@ export class ExpenseFormComponent implements OnInit {
   onImageUpload($event : string)
   {
     this.imgSrc = $event;
+  }
+
+  onGetLocation_Click($event: any)
+  {
+    this.lat = $event.lat;
+    this.lon = $event.lon;
   }
 }
