@@ -1,0 +1,10 @@
+<div class="text-center m-3">
+  <div class="d-flex align-content-center gap-3">
+    <img [src]="clearImg ? '../../assets/uploadImage.jpg' : imgsrc ? imgsrc : alreadyUploadedImg ? alreadyUploadedImg : '../../assets/uploadImage.jpg'
+" width="40%" alt="Image placeholder">
+    <div *ngIf="!isDeletePageActive" class="d-flex flex-column justify-content-center gap-3">
+      <button class="btn btn-primary container-fluid" (click)="onCapturePhotoClick()">Capture photo</button>
+      <button class="btn btn-secondary container-fluid" (click)="onLoadFromLibraryClick()">Upload</button>
+    </div>
+  </div>
+</div>

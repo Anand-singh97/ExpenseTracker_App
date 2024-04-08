@@ -14,20 +14,23 @@
           </div>
           <div class="d-flex gap-3 align-content-center">
             <select [formControl]="category" class="bg-white form-control" name="category" id="category">
-              <option value=7 selected>Education</option>
-              <option value= 8>Groceries</option>
-              <option value= 9>Health</option>
-              <option value= 10>Subscriptions</option>
-              <option value= 11>Takeaways</option>
-              <option value= 12>Clothing</option>
-              <option value= 13>Travelling</option>
-              <option value= 15>Other</option>
+              <option [value]="8">Education</option>
+              <option [value]="9">Groceries</option>
+              <option [value]="10">Health</option>
+              <option [value]="11">Subscriptions</option>
+              <option [value]="12">Takeaways</option>
+              <option [value]="13">Clothing</option>
+              <option [value]="14">Travelling</option>
+              <option [value]="15">Other</option>
             </select>
           </div>
         </div>
       </div>
       <div class="mb-3">
         <app-input-component type="date" name="date" [control]="date"></app-input-component>
+      </div>
+      <div class="mb-3">
+        <app-camera [clearImg]="isFormSubmitted" (uploadedImg)="onImageUpload($event)"></app-camera>
       </div>
       <div class="mb-3">
         <textarea [formControl]="comments" placeholder="Comments..." class="form-control"

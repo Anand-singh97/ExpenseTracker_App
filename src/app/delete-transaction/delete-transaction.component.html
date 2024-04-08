@@ -23,16 +23,18 @@
                 <option [value]="2" [selected]="selectedIncome?.category === 2">Investments</option>
                 <option [value]="3" [selected]="selectedIncome?.category === 3">Stocks</option>
                 <option [value]="4" [selected]="selectedIncome?.category === 4">Bitcoin</option>
-                <option [value]="14" [selected]="selectedIncome?.category === 14">Other</option>
+                <option [value]="5" [selected]="selectedIncome?.category === 5">Bank-transfer</option>
+                <option [value]="6" [selected]="selectedIncome?.category === 6">Youtube</option>
+                <option [value]="7" [selected]="selectedIncome?.category === 7">Other</option>
               </ng-container>
               <ng-template #expenseOptions>
-                <option [value]="7" [selected]="selectedIncome?.category === 7">Education</option>
-                <option [value]="8" [selected]="selectedIncome?.category === 8">Groceries</option>
-                <option [value]="9" [selected]="selectedIncome?.category === 9">Health</option>
-                <option [value]="10" [selected]="selectedIncome?.category === 10">Subscriptions</option>
-                <option [value]="11" [selected]="selectedIncome?.category === 11">Takeaways</option>
-                <option [value]="12" [selected]="selectedIncome?.category === 12">Clothing</option>
-                <option [value]="13" [selected]="selectedIncome?.category === 13">Travelling</option>
+                <option [value]="8" [selected]="selectedIncome?.category === 8">Education</option>
+                <option [value]="9" [selected]="selectedIncome?.category === 9">Groceries</option>
+                <option [value]="10" [selected]="selectedIncome?.category === 10">Health</option>
+                <option [value]="11" [selected]="selectedIncome?.category === 11">Subscriptions</option>
+                <option [value]="12" [selected]="selectedIncome?.category === 12">Takeaways</option>
+                <option [value]="13" [selected]="selectedIncome?.category === 13">Clothing</option>
+                <option [value]="14" [selected]="selectedIncome?.category === 14">Travelling</option>
                 <option [value]="15" [selected]="selectedIncome?.category === 15">Other</option>
               </ng-template>
             </select>
@@ -41,6 +43,9 @@
       </div>
       <div class="mb-3">
         <app-input-component [readonly]="true" type="date" name="date" [control]="date"></app-input-component>
+      </div>
+      <div class="mb-3">
+        <app-camera [isDeletePageActive]="true" [alreadyUploadedImg]="selectedIncome?.photo"></app-camera>
       </div>
       <div class="mb-3">
         <textarea [readonly]="true" [formControl]="comments" placeholder="Comments..." class="form-control"

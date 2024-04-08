@@ -1,7 +1,7 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
 import { AppComponent } from './app/app.component';
-import {TransactionService} from "./services/transaction.service";
+import {TransactionService} from "./app/services/transaction.service";
 
 const transactionService = new TransactionService();
 transactionService.initializeDatabase().then(()=>

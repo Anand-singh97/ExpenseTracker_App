@@ -3,9 +3,9 @@ import {TransactionListComponent} from "../transaction-list/transaction-list.com
 import {ITransaction, type} from "../../model/model";
 import {InputComponentComponent} from "../input-component/input-component.component";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {DALService} from "../../services/dal.service";
+import {DALService} from "../services/dal.service";
 import {ActivatedRoute} from "@angular/router";
-
+import {CameraComponent} from "../camera/camera.component";
 
 @Component({
   selector: 'app-income-form',
@@ -14,17 +14,22 @@ import {ActivatedRoute} from "@angular/router";
     TransactionListComponent,
     InputComponentComponent,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    CameraComponent
   ],
   templateUrl: './income-form.component.html',
   styleUrl: './income-form.component.css'
 })
+
 export class IncomeFormComponent implements OnInit
 {
   incomeList: Array<ITransaction> = [];
   formTitle: string = 'Add Income'
   selectedIncome: ITransaction | null | undefined;
   selectedSortOption: number = 3;
+  imgSrc: string = '';
+  isFormSubmitted: boolean = false;
+
   constructor(public dal: DALService, public route: ActivatedRoute) {}
 
   async ngOnInit()
@@ -49,7 +54,7 @@ export class IncomeFormComponent implements OnInit
   amount = new FormControl('',
     [Validators.required, Validators.min(1)]);
   category = new FormControl(0);
-  date = new FormControl(new Date(), [Validators.required]);
+  date = new FormControl(new Date().toLocaleDateString('en-CA').split('T')[0], [Validators.required]);
   comments = new FormControl('');
   incomeForm = new FormGroup({
     title: this.title,
@@ -70,17 +75,19 @@ export class IncomeFormComponent implements OnInit
         transactionType: type.income,
         category: Number(this.incomeForm.value.category),
         date: transactionDate,
-        comment: this.incomeForm.value.comments!
+        comment: this.incomeForm.value.comments!,
+        photo: this.imgSrc != '' ? this.imgSrc : undefined
       };
       try
       {
         await this.dal.insert(newIncome);
         this.incomeForm.reset();
+        this.isFormSubmitted = true;
         this.incomeList = await this.dal.getIncomeList();
       }
       catch(e)
       {
-        console.log('Error adding income transaction: ', e)
+        console.log('Error adding income transaction: ', e);
       }
     }
   }
@@ -108,5 +115,11 @@ export class IncomeFormComponent implements OnInit
           new Date(a.date).getTime() - new Date(b.date).getTime());
         break;
     }
+  }
+
+  onImageUpload($event : string)
+  {
+    this.imgSrc = $event;
+
   }
 }

@@ -3,8 +3,9 @@ import {ITransaction, type} from "../../model/model";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {InputComponentComponent} from "../input-component/input-component.component";
 import {TransactionListComponent} from "../transaction-list/transaction-list.component";
-import {DALService} from "../../services/dal.service";
+import {DALService} from "../services/dal.service";
 import {Subscription} from "rxjs";
+import {CameraComponent} from "../camera/camera.component";
 
 @Component({
   selector: 'app-expense-form',
@@ -13,7 +14,8 @@ import {Subscription} from "rxjs";
     InputComponentComponent,
     ReactiveFormsModule,
     TransactionListComponent,
-    FormsModule
+    FormsModule,
+    CameraComponent
   ],
   templateUrl: './expense-form.component.html',
   styleUrl: './expense-form.component.css'
@@ -24,9 +26,10 @@ export class ExpenseFormComponent implements OnInit {
   currMonth: number = Number(localStorage.getItem('currMonth')) ?? (new Date()).getMonth();
   expenseList: Array<ITransaction> = [];
   selectedSortOption: number = 3;
+  imgSrc: string = '';
+  isFormSubmitted: boolean = false;
 
-  constructor(public dal: DALService) {
-  }
+  constructor(public dal: DALService) {}
 
   async ngOnInit() {
     this.currentMonthSubscription = this.dal.getCurrMonth()
@@ -41,9 +44,9 @@ export class ExpenseFormComponent implements OnInit {
   amount = new FormControl('',
     [Validators.required, Validators.min(1)])
 
-  category = new FormControl(7,);
+  category = new FormControl(8,);
 
-  date = new FormControl(new Date(), [Validators.required]);
+  date = new FormControl(new Date().toLocaleDateString('en-CA').split('T')[0], [Validators.required]);
 
   comments = new FormControl('');
 
@@ -65,11 +68,13 @@ export class ExpenseFormComponent implements OnInit {
         transactionType: type.expense,
         category: Number(this.expenseForm.value.category),
         date: transactionDate,
-        comment: this.expenseForm.value.comments!
+        comment: this.expenseForm.value.comments!,
+        photo: this.imgSrc != '' ? this.imgSrc : undefined
       };
       try {
         await this.dal.insert(newExpense);
         this.expenseForm.reset();
+        this.isFormSubmitted = true;
         this.expenseList = await this.dal.getExpenseList();
       } catch (e) {
         console.log('Error adding expense transaction: ', e)
@@ -98,5 +103,9 @@ export class ExpenseFormComponent implements OnInit {
           new Date(a.date).getTime() - new Date(b.date).getTime());
         break;
     }
+  }
+  onImageUpload($event : string)
+  {
+    this.imgSrc = $event;
   }
 }

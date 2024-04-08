@@ -3,9 +3,10 @@ import {InputComponentComponent} from "../input-component/input-component.compon
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {TransactionListComponent} from "../transaction-list/transaction-list.component";
 import {ITransaction, type} from "../../model/model";
-import {DALService} from "../../services/dal.service";
+import {DALService} from "../services/dal.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {JsonPipe, NgIf} from "@angular/common";
+import {CameraComponent} from "../camera/camera.component";
 
 @Component({
   selector: 'app-update-transaction',
@@ -15,7 +16,8 @@ import {JsonPipe, NgIf} from "@angular/common";
     ReactiveFormsModule,
     TransactionListComponent,
     NgIf,
-    JsonPipe
+    JsonPipe,
+    CameraComponent
   ],
   templateUrl: './update-transaction.component.html',
   styleUrl: './update-transaction.component.css'
@@ -26,11 +28,11 @@ export class UpdateTransactionComponent implements OnInit
   selectedIncome: ITransaction | null | undefined;
   transactionForm: FormGroup = new FormGroup<any>('');
   protected readonly type = type;
-  constructor(public dal: DALService, public route: ActivatedRoute, public router: Router)
-  {
-  }
+  newlyUploadedImg: string = '';
 
-  async ngOnInit()
+  constructor(public dal: DALService, public route: ActivatedRoute, public router: Router) {}
+
+  async ngOnInit(): Promise<void>
   {
     const id: number = Number(this.route.snapshot.paramMap.get("id"));
     if (id)
@@ -40,12 +42,14 @@ export class UpdateTransactionComponent implements OnInit
         this.selectedIncome = await this.dal.select(id);
         if(this.selectedIncome)
         {
+          const selectedDate = this.selectedIncome.date;
+          const formattedDate = selectedDate.toISOString().split('T')[0];
           this.formTitle = this.selectedIncome.transactionType === type.income ?
             'Update Income' : 'Update Expense'
           this.title.setValue(this.selectedIncome!.title);
           this.amount.setValue(this.selectedIncome!.amount.toString());
           this.category.setValue(1);
-          this.date.setValue(new Date(this.selectedIncome.date).toLocaleDateString());
+          this.date.setValue(formattedDate);
           this.comments.setValue(this.selectedIncome!.comment.toString());
         }
         this.transactionForm = new FormGroup({
@@ -84,7 +88,9 @@ export class UpdateTransactionComponent implements OnInit
           transactionType: Number(this.selectedIncome?.transactionType),
           category: Number(this.transactionForm.value.category),
           date: transactionDate,
-          comment: this.transactionForm.value.comments!
+          comment: this.transactionForm.value.comments!,
+          photo: this.newlyUploadedImg != '' ? this.newlyUploadedImg : this.selectedIncome?.photo ?
+            this.selectedIncome.photo : undefined
         };
         await this.dal.update(newIncome);
         await this.navigate();
@@ -103,5 +109,9 @@ export class UpdateTransactionComponent implements OnInit
     const rt = this.selectedIncome?.transactionType === type.income ?
       ['/transaction/income'] : ['/transaction/expense'];
     await this.router.navigate(rt);
+  }
+
+  onImageUpload($event: string){
+    this.newlyUploadedImg = $event;
   }
 }

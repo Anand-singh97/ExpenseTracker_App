@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import Chart from 'chart.js/auto';
 import {type} from "../../model/model";
-import {DALService} from "../../services/dal.service";
+import {DALService} from "../services/dal.service";
 import {Subscription} from "rxjs";
 import {JsonPipe, NgIf} from "@angular/common";
 

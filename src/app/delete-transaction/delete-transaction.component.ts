@@ -3,8 +3,9 @@ import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {InputComponentComponent} from "../input-component/input-component.component";
 import {NgIf} from "@angular/common";
 import {ITransaction, type} from "../../model/model";
-import {DALService} from "../../services/dal.service";
+import {DALService} from "../services/dal.service";
 import {ActivatedRoute, Router} from "@angular/router";
+import {CameraComponent} from "../camera/camera.component";
 
 @Component({
   selector: 'app-delete-transaction',
@@ -13,7 +14,8 @@ import {ActivatedRoute, Router} from "@angular/router";
     FormsModule,
     InputComponentComponent,
     NgIf,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CameraComponent
   ],
   templateUrl: './delete-transaction.component.html',
   styleUrl: './delete-transaction.component.css'
@@ -35,13 +37,15 @@ export class DeleteTransactionComponent implements OnInit
         this.selectedIncome = await this.dal.select(id);
         if(this.selectedIncome)
         {
-          console.log((this.selectedIncome!.category));
+          const selectedDate = this.selectedIncome.date;
+          const formattedDate = selectedDate.toISOString().split('T')[0];
+
           this.formTitle = this.selectedIncome.transactionType === type.income ?
             'Are you sure, you want to delete this Income?' : 'Are you sure, you want to delete this Expense?'
           this.title.setValue(this.selectedIncome!.title);
           this.amount.setValue(this.selectedIncome!.amount.toString());
           this.category.setValue(Number(this.selectedIncome!.category));
-          this.date.setValue(new Date(this.selectedIncome.date).toLocaleDateString());
+          this.date.setValue(formattedDate);
           this.comments.setValue(this.selectedIncome!.comment.toString());
         }
         this.transactionForm = new FormGroup({

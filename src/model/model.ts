@@ -5,7 +5,8 @@ export interface ITransaction{
   transactionType: type,
   category: categoryOptions,
   date: Date,
-  comment: string
+  comment: string,
+  photo?: string
 }
 
 export enum type{

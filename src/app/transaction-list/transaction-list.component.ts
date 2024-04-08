@@ -2,7 +2,7 @@ import {Component, Input} from '@angular/core';
 import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {categoryOptions, ITransaction, type} from "../../model/model";
 import {RouterLink} from "@angular/router";
-import {DALService} from "../../services/dal.service";
+import {DALService} from "../services/dal.service";
 @Component({
   selector: 'app-transaction-list',
   standalone: true,

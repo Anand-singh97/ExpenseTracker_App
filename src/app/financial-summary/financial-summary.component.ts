@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {DALService} from "../../services/dal.service";
+import {DALService} from "../services/dal.service";
 import {Subscription} from "rxjs";
 
 @Component({
