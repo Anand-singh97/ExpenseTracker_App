@@ -1,5 +1,5 @@
 .analytics-card{
-  margin: 0px auto;
+  margin: 0 auto;
   border: none;
 }
 
@@ -15,4 +15,8 @@ h1{
 }
 .balance-card{
   box-shadow: 0 5px 5px rgba(110, 146, 245, 0.8);
+}
+.summary-container
+{
+  height: 408px;
 }

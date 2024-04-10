@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ITransaction, type} from "../../model/model";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {InputComponentComponent} from "../input-component/input-component.component";
@@ -23,7 +23,9 @@ import {LocationComponent} from "../location/location.component";
   styleUrl: './expense-form.component.css'
 })
 
-export class ExpenseFormComponent implements OnInit {
+export class ExpenseFormComponent implements OnInit
+{
+  @ViewChild(LocationComponent) lc: LocationComponent = new LocationComponent();
   currentMonthSubscription: Subscription = new Subscription();
   currMonth: number = Number(localStorage.getItem('currMonth')) ?? (new Date()).getMonth();
   expenseList: Array<ITransaction> = [];
@@ -50,7 +52,8 @@ export class ExpenseFormComponent implements OnInit {
 
   category = new FormControl(8);
 
-  date = new FormControl(new Date().toLocaleDateString('en-CA').split('T')[0], [Validators.required]);
+  date = new FormControl(new Date().toLocaleDateString('en-CA')
+    .split('T')[0], [Validators.required]);
 
   comments = new FormControl('');
 
@@ -81,6 +84,8 @@ export class ExpenseFormComponent implements OnInit {
         await this.dal.insert(newExpense);
         this.expenseForm.reset();
         this.isFormSubmitted = true;
+        alert("Expense added Successfully 😊");
+        this.lc.resetView();
         this.expenseList = await this.dal.getExpenseList();
       } catch (e) {
         console.log('Error adding expense transaction: ', e)

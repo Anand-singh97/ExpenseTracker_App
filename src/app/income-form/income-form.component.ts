@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {TransactionListComponent} from "../transaction-list/transaction-list.component";
 import {ITransaction, type} from "../../model/model";
 import {InputComponentComponent} from "../input-component/input-component.component";
@@ -7,6 +7,7 @@ import {DALService} from "../services/dal.service";
 import {ActivatedRoute} from "@angular/router";
 import {CameraComponent} from "../camera/camera.component";
 import {LocationComponent} from "../location/location.component";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-income-form',
@@ -17,7 +18,8 @@ import {LocationComponent} from "../location/location.component";
     ReactiveFormsModule,
     FormsModule,
     CameraComponent,
-    LocationComponent
+    LocationComponent,
+    NgIf
   ],
   templateUrl: './income-form.component.html',
   styleUrl: './income-form.component.css'
@@ -25,6 +27,8 @@ import {LocationComponent} from "../location/location.component";
 
 export class IncomeFormComponent implements OnInit
 {
+  @ViewChild(LocationComponent) lc: LocationComponent = new LocationComponent();
+
   incomeList: Array<ITransaction> = [];
   formTitle: string = 'Add Income'
   selectedIncome: ITransaction | null | undefined;
@@ -32,11 +36,12 @@ export class IncomeFormComponent implements OnInit
   imgSrc: string = '';
   isFormSubmitted: boolean = false;
   lat: any;
-  lon: any
+  lon: any;
+  message: string = "Income Added Successfully."
 
   constructor(public dal: DALService, public route: ActivatedRoute) {}
 
-  async ngOnInit()
+  async ngOnInit(): Promise<void>
   {
     const id: number = Number(this.route.snapshot.paramMap.get("id"));
     if(id)
@@ -59,7 +64,8 @@ export class IncomeFormComponent implements OnInit
   amount = new FormControl('',
     [Validators.required, Validators.min(1)]);
   category = new FormControl(0);
-  date = new FormControl(new Date().toLocaleDateString('en-CA').split('T')[0], [Validators.required]);
+  date = new FormControl(new Date().toLocaleDateString('en-CA')
+      .split('T')[0], [Validators.required]);
   comments = new FormControl('');
   incomeForm = new FormGroup({
     title: this.title,
@@ -90,6 +96,9 @@ export class IncomeFormComponent implements OnInit
         await this.dal.insert(newIncome);
         this.incomeForm.reset();
         this.isFormSubmitted = true;
+        alert("Income Added Successfully. 😊");
+
+        this.lc.resetView();
         this.incomeList = await this.dal.getIncomeList();
       }
       catch(e)

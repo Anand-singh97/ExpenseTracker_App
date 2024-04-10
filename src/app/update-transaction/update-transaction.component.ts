@@ -80,7 +80,8 @@ export class UpdateTransactionComponent implements OnInit
   date = new FormControl(new Date().toLocaleDateString(), [Validators.required]);
   comments = new FormControl('');
 
-  async btnUpdate_Click() {
+  async btnUpdate_Click() : Promise<void>
+  {
     try
     {
       if (this.transactionForm.valid)
@@ -102,6 +103,7 @@ export class UpdateTransactionComponent implements OnInit
           lon: this.lon != '' ? this.lon : this.selectedIncome?.lon ? this.selectedIncome.lon : undefined
         };
         await this.dal.update(newIncome);
+        alert("Transaction updated Successfully 😊");
         await this.navigate();
       }
     }

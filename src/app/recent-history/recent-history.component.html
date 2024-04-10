@@ -4,7 +4,9 @@
       <app-transaction-list [transactions]="recentTransactions"></app-transaction-list>
     </div>
     <ng-template #noRecentTransactions>
-      <p class="text-center mt-5 fw-bolder">No transactions recorded for <span class="text-info">{{months[currMonth-1]}}</span> </p>
+      <p class="text-center mt-5 fw-bolder">No transactions recorded for
+        <span class="text-info">{{months[currMonth-1]}}</span>
+      </p>
       <div class="d-flex gap-3 justify-content-center">
         <button type="button" class="toggleTransaction btn
         btn-outline-primary mt-2" routerLink="/transaction/income">Add Income</button>

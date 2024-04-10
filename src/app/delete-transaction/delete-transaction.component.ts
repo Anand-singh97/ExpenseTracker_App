@@ -78,6 +78,7 @@ export class DeleteTransactionComponent implements OnInit
       if (this.transactionForm.valid)
       {
         await this.dal.delete(this.selectedIncome!.id!);
+        alert("Transaction deleted successfully 😊");
         await this.navigate();
       }
     }
