@@ -1,0 +1,17 @@
+.progress-container{
+  background-color: #fbe5f1;
+  padding: 15px;
+  border-radius: 20px;
+  width: 70%;
+  height: 250px;
+  overflow: scroll;
+}
+.lblSet{
+  background-color: #f8ab93;
+  border-radius: 20px;
+  padding: 5px 10px;
+}
+
+.bar{
+  font-size: 15px;
+}

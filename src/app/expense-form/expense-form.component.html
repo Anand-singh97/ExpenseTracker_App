@@ -15,14 +15,9 @@
           </div>
           <div class="d-flex gap-3 align-content-center">
             <select [formControl]="category" class="bg-white form-control" name="category" id="category">
-              <option [value]="8">Education</option>
-              <option [value]="9">Groceries</option>
-              <option [value]="10">Health</option>
-              <option [value]="11">Subscriptions</option>
-              <option [value]="12">Takeaways</option>
-              <option [value]="13">Clothing</option>
-              <option [value]="14">Travelling</option>
-              <option [value]="15">Other</option>
+              <ng-container *ngFor="let item of categories">
+                <option  *ngIf="item.typeId === 2" [value]="item.id">{{item.name}}</option>
+              </ng-container>
             </select>
           </div>
         </div>

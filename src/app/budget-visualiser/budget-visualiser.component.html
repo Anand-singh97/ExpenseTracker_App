@@ -1,0 +1,42 @@
+<div>
+  <h2 class="text-center">Budget Visualizer</h2>
+  <div>
+    <div class="d-flex justify-content-center mb-1">
+      <div class="card w-75 text-white bg-success">
+        <div class="card-body text-center">
+          <h5 class="card-title">{{month}}'s Expense: ${{totalExpense}}</h5>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-center my-2">
+      <div style="border-radius: 5px"  class="w-75 pt-3 text-white justify-content-center d-flex" [ngClass]="{'bg-success': budgetLeft>=0, 'bg-danger': budgetLeft < 0}">
+        <div class="d-flex gap-2">
+          <label *ngIf="budgetLeft>0" class="">Budget Left:</label>
+          <label *ngIf="budgetLeft<0" class="">Budget Overdraft by:</label>
+          <p>${{budgetLeft}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="text-center">
+          <label class="lblSet">Set Budget</label>
+          <input  style="margin: 0 auto" [(ngModel)]="maxBudget" (ngModelChange)="calculateLeftBudget()"
+                  class="form-control w-50" type="number" placeholder="max Budget">
+    </div>
+    <div class="d-flex justify-content-center">
+      <div class="progress-container d-flex flex-column mt-3">
+        <div *ngFor="let item of categoriesBasedExpense">
+          <label>{{item.id}}: ${{item.amount}}</label>
+          <div class="progress bar bg-light" role="progressbar"  aria-valuemin="0"
+               [attr.aria-valuenow]="(item.amount / maxBudget) * 100" aria-valuemax="100">
+            <div
+              [ngClass]="{'bg-success':(item.amount / maxBudget) * 100 < 50, 'bg-warning':(item.amount / maxBudget) * 100 > 50 , 'bg-danger':(item.amount / maxBudget) * 100 > 75}"
+              class="progress-bar progress-bar-striped progress-bar-animated"
+              [style.width.%]="(item.amount / maxBudget) * 100">{{Math.round((item.amount / maxBudget) * 100)}}%
+            </div>
+          </div>
+          <hr>
+        </div>
+      </div>
+    </div>
+</div>
+</div>

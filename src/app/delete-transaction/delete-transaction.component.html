@@ -17,25 +17,30 @@
           <div class="d-flex gap-3 align-content-center">
             <select [formControl]="category" style="background-color: #efefef"
                     class="form-control" name="category" id="category">
-              <ng-container *ngIf="selectedIncome?.transactionType === type.income; else expenseOptions">
-                <option [value]="0" [selected]="selectedIncome?.category === 0">Salary</option>
-                <option [value]="1" [selected]="selectedIncome?.category === 1">Freelancing</option>
-                <option [value]="2" [selected]="selectedIncome?.category === 2">Investments</option>
-                <option [value]="3" [selected]="selectedIncome?.category === 3">Stocks</option>
-                <option [value]="4" [selected]="selectedIncome?.category === 4">Bitcoin</option>
-                <option [value]="5" [selected]="selectedIncome?.category === 5">Bank-transfer</option>
-                <option [value]="6" [selected]="selectedIncome?.category === 6">Youtube</option>
-                <option [value]="7" [selected]="selectedIncome?.category === 7">Other</option>
+              <ng-container *ngIf="selectedIncome?.typeId === 1; else expenseOptions">
+                <ng-container *ngFor="let item of categories">
+                  <option  *ngIf="item.typeId === 1" [value]="item.id" [selected]="selectedIncome?.categoryId === item.id">{{item.name}}</option>
+                </ng-container>
+<!--                <option [value]="1" [selected]="selectedIncome?.categoryId === 1">Freelancing</option>-->
+<!--                <option [value]="2" [selected]="selectedIncome?.categoryId === 2">Investments</option>-->
+<!--                <option [value]="3" [selected]="selectedIncome?.categoryId === 3">Stocks</option>-->
+<!--                <option [value]="4" [selected]="selectedIncome?.categoryId === 4">Bitcoin</option>-->
+<!--                <option [value]="5" [selected]="selectedIncome?.categoryId === 5">Bank-transfer</option>-->
+<!--                <option [value]="6" [selected]="selectedIncome?.categoryId === 6">Youtube</option>-->
+<!--                <option [value]="7" [selected]="selectedIncome?.categoryId === 7">Other</option>-->
               </ng-container>
               <ng-template #expenseOptions>
-                <option [value]="8" [selected]="selectedIncome?.category === 8">Education</option>
-                <option [value]="9" [selected]="selectedIncome?.category === 9">Groceries</option>
-                <option [value]="10" [selected]="selectedIncome?.category === 10">Health</option>
-                <option [value]="11" [selected]="selectedIncome?.category === 11">Subscriptions</option>
-                <option [value]="12" [selected]="selectedIncome?.category === 12">Takeaways</option>
-                <option [value]="13" [selected]="selectedIncome?.category === 13">Clothing</option>
-                <option [value]="14" [selected]="selectedIncome?.category === 14">Travelling</option>
-                <option [value]="15" [selected]="selectedIncome?.category === 15">Other</option>
+                <ng-container *ngFor="let item of categories">
+                  <option  *ngIf="item.typeId === 2" [value]="item.id" [selected]="selectedIncome?.categoryId === item.id">{{item.name}}</option>
+                </ng-container>
+<!--                <option [value]="8" [selected]="selectedIncome?.categoryId === 8">Education</option>-->
+<!--                <option [value]="9" [selected]="selectedIncome?.categoryId === 9">Groceries</option>-->
+<!--                <option [value]="10" [selected]="selectedIncome?.categoryId === 10">Health</option>-->
+<!--                <option [value]="11" [selected]="selectedIncome?.categoryId === 11">Subscriptions</option>-->
+<!--                <option [value]="12" [selected]="selectedIncome?.categoryId === 12">Takeaways</option>-->
+<!--                <option [value]="13" [selected]="selectedIncome?.categoryId === 13">Clothing</option>-->
+<!--                <option [value]="14" [selected]="selectedIncome?.categoryId === 14">Travelling</option>-->
+<!--                <option [value]="15" [selected]="selectedIncome?.categoryId === 15">Other</option>-->
               </ng-template>
             </select>
           </div>

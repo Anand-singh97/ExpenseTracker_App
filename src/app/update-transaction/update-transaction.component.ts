@@ -2,10 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {InputComponentComponent} from "../input-component/input-component.component";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {TransactionListComponent} from "../transaction-list/transaction-list.component";
-import {ITransaction, type} from "../../model/model";
+import {ICategories, ITransaction, IType} from "../../model/model";
 import {DALService} from "../services/dal.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {JsonPipe, NgIf} from "@angular/common";
+import {JsonPipe, NgForOf, NgIf} from "@angular/common";
 import {CameraComponent} from "../camera/camera.component";
 import {LocationComponent} from "../location/location.component";
 
@@ -19,7 +19,8 @@ import {LocationComponent} from "../location/location.component";
     NgIf,
     JsonPipe,
     CameraComponent,
-    LocationComponent
+    LocationComponent,
+    NgForOf
   ],
   templateUrl: './update-transaction.component.html',
   styleUrl: './update-transaction.component.css'
@@ -29,7 +30,7 @@ export class UpdateTransactionComponent implements OnInit
   formTitle: string = 'Update Income'
   selectedIncome: ITransaction | null | undefined;
   transactionForm: FormGroup = new FormGroup<any>('');
-  protected readonly type = type;
+  categories: Array<ICategories> = [];
   newlyUploadedImg: string = '';
   lat: string = ''
   lon: string = ''
@@ -43,18 +44,18 @@ export class UpdateTransactionComponent implements OnInit
     {
       try
       {
+        this.categories = await this.dal.getAllCategories();
         this.selectedIncome = await this.dal.select(id);
         if(this.selectedIncome)
         {
-          console.log(this.selectedIncome.category);
 
           const selectedDate = this.selectedIncome.date;
           const formattedDate = selectedDate.toISOString().split('T')[0];
-          this.formTitle = this.selectedIncome.transactionType === type.income ?
+          this.formTitle = this.selectedIncome.typeId === 1 ?
             'Update Income' : 'Update Expense'
           this.title.setValue(this.selectedIncome!.title);
           this.amount.setValue(this.selectedIncome!.amount.toString());
-          this.category.setValue(this.selectedIncome.category);
+          this.category.setValue(this.selectedIncome.categoryId);
           this.date.setValue(formattedDate);
           this.comments.setValue(this.selectedIncome!.comment.toString());
         }
@@ -93,8 +94,8 @@ export class UpdateTransactionComponent implements OnInit
           id: this.selectedIncome?.id,
           title: this.transactionForm.value.title!,
           amount: Number(this.transactionForm.value.amount),
-          transactionType: Number(this.selectedIncome?.transactionType),
-          category: Number(this.transactionForm.value.category),
+          typeId: Number(this.selectedIncome?.typeId),
+          categoryId: Number(this.transactionForm.value.category),
           date: transactionDate,
           comment: this.transactionForm.value.comments!,
           photo: this.newlyUploadedImg != '' ? this.newlyUploadedImg : this.selectedIncome?.photo ?
@@ -117,7 +118,7 @@ export class UpdateTransactionComponent implements OnInit
   }
 
   async navigate(){
-    const rt = this.selectedIncome?.transactionType === type.income ?
+    const rt = this.selectedIncome?.typeId === 1 ?
       ['/transaction/income'] : ['/transaction/expense'];
     await this.router.navigate(rt);
   }

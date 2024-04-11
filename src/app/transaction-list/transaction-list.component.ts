@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
-import {categoryOptions, ITransaction, type} from "../../model/model";
+import {ICategories, ITransaction, IType} from "../../model/model";
 import {RouterLink} from "@angular/router";
 import {DALService} from "../services/dal.service";
 @Component({
@@ -16,11 +16,11 @@ import {DALService} from "../services/dal.service";
 export class TransactionListComponent
 {
   @Input() transactions: Array<ITransaction> = [];
-  readonly type = type;
+  // readonly type = type;
   constructor(public dal: DALService)
   {
   }
-  protected readonly categoryOptions = categoryOptions;
+  // protected readonly categoryOptions = categoryOptions;
 
   async delete(id: number): Promise<void>
   {

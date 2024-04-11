@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {TransactionService} from "./transaction.service";
-import {ITransaction, type} from "../../model/model";
+import {ICategories, ITransaction, IType} from "../../model/model";
 import {BehaviorSubject} from "rxjs";
 
 @Injectable({
@@ -20,13 +20,100 @@ export class DALService
     return this.monthSubject.asObservable();
   }
 
+  getAllCategories(): Promise<ICategories[]>
+  {
+    return new Promise((resolve, reject) => {
+      if (!TransactionService.db) {
+        reject("Database is not initialized.");
+        return;
+      }
+
+      const transaction = TransactionService.db.transaction(["categories"], "readonly");
+
+      transaction.oncomplete = () => {
+        console.log("Success: getAllCategories transaction successful");
+      };
+
+      transaction.onerror = (event) => {
+        console.error("Error: error in getAll categories transaction ", event);
+        reject(event);
+      };
+
+      const transactionStore = transaction.objectStore("categories");
+      const reviewRequest = transactionStore.openCursor();
+
+      const categories: ICategories[] = [];
+
+      reviewRequest.onsuccess = (event) => {
+        const cursor = (event.target as IDBRequest).result; // Access result from request
+        if (cursor) {
+          categories.push(cursor.value);
+          cursor.continue();
+        } else {
+          resolve(categories);
+        }
+      };
+
+      reviewRequest.onerror = (event) => {
+        console.error("Error opening cursor", event);
+        reject(event);
+      };
+    });
+  }
+
+  async getCategoryBasedExpense(month: number): Promise<Array<any>>
+  {
+    let res: any[] = [];
+    let categories: Array<ICategories> = [];
+    try
+    {
+      const expenses = await this.getMonthlyTransactions(month);
+      categories = await this.getAllCategories();
+      for (const item of expenses)
+      {
+        if(item.typeId === 2)
+        {
+          let found = false;
+          for (const i of res)
+          {
+            if (i.id === item.categoryId)
+            {
+              i.amount += item.amount;
+              found = true;
+              break;
+            }
+          }
+          if (!found)
+          {
+            res.push({ id: item.categoryId, amount: item.amount });
+          }
+        }
+      }
+    } catch(e) {
+      console.log("Error getting category based expense: ", e);
+    }
+    if(res.length > 0)
+    {
+      res.forEach((item)=>{
+        categories.forEach((i)=>{
+          if(item.id === i.id)
+          {
+            item.id = i.name;
+          }
+        })
+      })
+    }
+    console.log(res);
+    return res;
+  }
+
   async getIncomeList(): Promise<ITransaction[]>
   {
     try
     {
       const tr: Array<ITransaction> = await this.getAllTransactions();
       let filteredIncomeList = tr.filter((item)=>{
-        return item.transactionType === type.income;
+        return item.typeId === 1;
       });
       return filteredIncomeList
         .sort((a, b)=> a.date > b.date ? -1 : 1);
@@ -44,7 +131,7 @@ export class DALService
     {
       const tr: Array<ITransaction> = await this.getAllTransactions();
       let filteredExpenseList =  tr.filter((item)=>{
-        return item.transactionType === type.expense;
+        return item.typeId === 2;
       });
       return filteredExpenseList.sort((a, b)=> a.date > b.date ? -1 : 1);
     }
@@ -66,7 +153,7 @@ export class DALService
 
       transactions.forEach((item) => {
         const monthOfTransaction: number = (item.date).getMonth() + 1;
-        if (monthOfTransaction === selectedMonth && item.transactionType === type.income) {
+        if (monthOfTransaction === selectedMonth && item.typeId === 1) {
           total += item.amount;
         }
       });
@@ -90,7 +177,7 @@ export class DALService
 
       transactions.forEach((item) => {
         const monthOfTransaction: number = (item.date).getMonth() + 1;
-        if (monthOfTransaction === selectedMonth && item.transactionType === type.expense) {
+        if (monthOfTransaction === selectedMonth && item.typeId === 2) {
           total += item.amount;
         }
       });

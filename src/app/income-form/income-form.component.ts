@@ -1,13 +1,13 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {TransactionListComponent} from "../transaction-list/transaction-list.component";
-import {ITransaction, type} from "../../model/model";
+import {ICategories, ITransaction, IType} from "../../model/model";
 import {InputComponentComponent} from "../input-component/input-component.component";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {DALService} from "../services/dal.service";
 import {ActivatedRoute} from "@angular/router";
 import {CameraComponent} from "../camera/camera.component";
 import {LocationComponent} from "../location/location.component";
-import {NgIf} from "@angular/common";
+import {NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-income-form',
@@ -19,7 +19,8 @@ import {NgIf} from "@angular/common";
     FormsModule,
     CameraComponent,
     LocationComponent,
-    NgIf
+    NgIf,
+    NgForOf
   ],
   templateUrl: './income-form.component.html',
   styleUrl: './income-form.component.css'
@@ -38,7 +39,7 @@ export class IncomeFormComponent implements OnInit
   lat: any;
   lon: any;
   message: string = "Income Added Successfully."
-
+  categories: Array<ICategories> = [];
   constructor(public dal: DALService, public route: ActivatedRoute) {}
 
   async ngOnInit(): Promise<void>
@@ -49,21 +50,20 @@ export class IncomeFormComponent implements OnInit
       try
       {
         this.selectedIncome = await this.dal.select(id);
-        console.log(id);
       }
       catch(e)
       {
         console.log(e);
       }
     }
-
+    this.categories = await this.dal.getAllCategories();
     this.incomeList = await this.dal.getIncomeList();
   }
 
   title = new FormControl('', [Validators.required]);
   amount = new FormControl('',
     [Validators.required, Validators.min(1)]);
-  category = new FormControl(0);
+  category = new FormControl(1);
   date = new FormControl(new Date().toLocaleDateString('en-CA')
       .split('T')[0], [Validators.required]);
   comments = new FormControl('');
@@ -83,8 +83,8 @@ export class IncomeFormComponent implements OnInit
       const newIncome: ITransaction = {
         title: this.incomeForm.value.title!,
         amount: Number(this.incomeForm.value.amount),
-        transactionType: type.income,
-        category: Number(this.incomeForm.value.category),
+        typeId: 1,
+        categoryId: Number(this.incomeForm.value.category),
         date: transactionDate,
         comment: this.incomeForm.value.comments!,
         photo: this.imgSrc != '' ? this.imgSrc : undefined,

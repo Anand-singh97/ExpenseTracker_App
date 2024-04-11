@@ -2,16 +2,21 @@
   background-color: black;
 }
 
+.arrowBox{
+  position: absolute;
+  top: 250px;
+  width: 100%;
+}
+
 .carousel-item {
   transition: transform 0.3s ease;
 }
 
 .analytics-box{
-  z-index: 5;
   padding: 10px;
   border-radius: 10px;
   background-color: #efecec;
-  height: 30rem;
+  height: 35rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {TransactionListComponent} from "../transaction-list/transaction-list.component";
-import {ITransaction, type} from "../../model/model";
+import {ITransaction, IType} from "../../model/model";
 import {DALService} from "../services/dal.service";
 import {Subscription} from "rxjs";
 import {RouterLink} from "@angular/router";
@@ -28,7 +28,7 @@ export class RecentHistoryComponent implements OnInit
   ];
 
   recentTransactions: Array<ITransaction> = [];
-  protected readonly type = type;
+  // protected readonly type = type;
   currentMonthSubscription: Subscription = new Subscription();
   currMonth: number = Number(localStorage.getItem('currMonth')) ?? (new Date()).getMonth();
   constructor(public dal: DALService)

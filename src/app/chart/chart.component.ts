@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import Chart from 'chart.js/auto';
-import {type} from "../../model/model";
+import {IType} from "../../model/model";
 import {DALService} from "../services/dal.service";
 import {Subscription} from "rxjs";
 import {JsonPipe, NgIf} from "@angular/common";
@@ -71,7 +71,7 @@ export class ChartComponent implements OnInit
       const day = date.getDate();
       const month = this.months[date.getMonth()];
       const fullDate = day + " " + month;
-      if (item.transactionType === type.income) {
+      if (item.typeId === 1) {
         if (this.income_date[this.income_date.length - 1] === fullDate) {
           this.incomes[this.incomes.length - 1] += item.amount;
         } else {

@@ -6,9 +6,9 @@
             <h6 style="border-radius: 20px; padding: 10px; background-color: #f1a9c2">
               {{ item.title }}
             </h6>
-            <h6 class="fw-semibold" [ngClass]="{'text-success': item.transactionType === type.income,
-            'text-danger': item.transactionType === type.expense}">
-              {{ item.transactionType === type.income ? '+' : '-' }}${{ item.amount }}
+            <h6 class="fw-semibold" [ngClass]="{'text-success': item.typeId === 1,
+            'text-danger': item.typeId === 2}">
+              {{ item.typeId === 1 ? '+' : '-' }}${{ item.amount }}
             </h6>
           </div>
 

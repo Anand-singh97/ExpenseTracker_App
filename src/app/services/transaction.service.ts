@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {transactionsData} from "../../model/model";
+import {categoriesData, transactionsData, typesData} from "../../model/model";
 @Injectable({
   providedIn: 'root'
 })
@@ -44,6 +44,30 @@ export class TransactionService {
       request.onupgradeneeded = (event) => {
         console.log("Upgrade needed for database");
         TransactionService.db = (event.target as IDBOpenDBRequest).result;
+
+        if (!TransactionService.db.objectStoreNames.contains("types"))
+        {
+          const types =  TransactionService.db.createObjectStore("types", {
+            keyPath: "id",
+            autoIncrement: true
+          });
+
+          // Add starter data to the object store
+          typesData.forEach((item) => {
+            types.add(item);
+          });
+        }
+
+        if (!TransactionService.db.objectStoreNames.contains("categories"))
+        {
+          const categories =  TransactionService.db.createObjectStore("categories", {
+            keyPath: "id",
+            autoIncrement: true
+          });
+          categoriesData.forEach((item)=>{
+            categories.add(item);
+          })
+        }
 
         if (!TransactionService.db.objectStoreNames.contains("transactions"))
         {

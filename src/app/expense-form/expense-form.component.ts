@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {ITransaction, type} from "../../model/model";
+import {ICategories, ITransaction, IType} from "../../model/model";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {InputComponentComponent} from "../input-component/input-component.component";
 import {TransactionListComponent} from "../transaction-list/transaction-list.component";
@@ -7,6 +7,7 @@ import {DALService} from "../services/dal.service";
 import {Subscription} from "rxjs";
 import {CameraComponent} from "../camera/camera.component";
 import {LocationComponent} from "../location/location.component";
+import {NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-expense-form',
@@ -17,7 +18,9 @@ import {LocationComponent} from "../location/location.component";
     TransactionListComponent,
     FormsModule,
     CameraComponent,
-    LocationComponent
+    LocationComponent,
+    NgForOf,
+    NgIf
   ],
   templateUrl: './expense-form.component.html',
   styleUrl: './expense-form.component.css'
@@ -34,6 +37,7 @@ export class ExpenseFormComponent implements OnInit
   isFormSubmitted: boolean = false;
   lat: any;
   lon: any
+  categories: Array<ICategories> = [];
 
   constructor(public dal: DALService) {}
 
@@ -42,6 +46,7 @@ export class ExpenseFormComponent implements OnInit
       .subscribe((value) => {
         this.currMonth = value
       });
+    this.categories = await this.dal.getAllCategories();
     this.expenseList = await this.dal.getExpenseList();
   }
 
@@ -50,7 +55,7 @@ export class ExpenseFormComponent implements OnInit
   amount = new FormControl('',
     [Validators.required, Validators.min(1)])
 
-  category = new FormControl(8);
+  category = new FormControl(9);
 
   date = new FormControl(new Date().toLocaleDateString('en-CA')
     .split('T')[0], [Validators.required]);
@@ -72,8 +77,8 @@ export class ExpenseFormComponent implements OnInit
       const newExpense: ITransaction = {
         title: this.expenseForm.value.title!,
         amount: Number(this.expenseForm.value.amount),
-        transactionType: type.expense,
-        category: Number(this.expenseForm.value.category),
+        typeId: 2,
+        categoryId: Number(this.expenseForm.value.category),
         date: transactionDate,
         comment: this.expenseForm.value.comments!,
         photo: this.imgSrc != '' ? this.imgSrc : undefined,

@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {InputComponentComponent} from "../input-component/input-component.component";
-import {NgIf} from "@angular/common";
-import {ITransaction, type} from "../../model/model";
+import {NgForOf, NgIf} from "@angular/common";
+import {ICategories, ITransaction, IType} from "../../model/model";
 import {DALService} from "../services/dal.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CameraComponent} from "../camera/camera.component";
@@ -17,7 +17,8 @@ import {LocationComponent} from "../location/location.component";
     NgIf,
     ReactiveFormsModule,
     CameraComponent,
-    LocationComponent
+    LocationComponent,
+    NgForOf
   ],
   templateUrl: './delete-transaction.component.html',
   styleUrl: './delete-transaction.component.css'
@@ -27,7 +28,8 @@ export class DeleteTransactionComponent implements OnInit
   formTitle: string = 'Delete Income'
   selectedIncome: ITransaction | null | undefined;
   transactionForm: FormGroup = new FormGroup<any>('');
-  protected readonly type = type;
+  categories: Array<ICategories> = [];
+  // protected readonly type = type;
   constructor(public dal: DALService, public route: ActivatedRoute, public router: Router) {}
   async ngOnInit()
   {
@@ -36,17 +38,18 @@ export class DeleteTransactionComponent implements OnInit
     {
       try
       {
+        this.categories = await this.dal.getAllCategories();
         this.selectedIncome = await this.dal.select(id);
         if(this.selectedIncome)
         {
           const selectedDate = this.selectedIncome.date;
           const formattedDate = selectedDate.toISOString().split('T')[0];
 
-          this.formTitle = this.selectedIncome.transactionType === type.income ?
+          this.formTitle = this.selectedIncome.typeId === 1 ?
             'Are you sure, you want to delete this Income?' : 'Are you sure, you want to delete this Expense?'
           this.title.setValue(this.selectedIncome!.title);
           this.amount.setValue(this.selectedIncome!.amount.toString());
-          this.category.setValue(Number(this.selectedIncome!.category));
+          this.category.setValue(Number(this.selectedIncome!.categoryId));
           this.date.setValue(formattedDate);
           this.comments.setValue(this.selectedIncome!.comment.toString());
         }
@@ -92,7 +95,7 @@ export class DeleteTransactionComponent implements OnInit
   }
 
   async navigate(){
-    const rt = this.selectedIncome?.transactionType === type.income ?
+    const rt = this.selectedIncome?.typeId === 1 ?
       ['/transaction/income'] : ['/transaction/expense'];
     await this.router.navigate(rt);
   }
