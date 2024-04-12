@@ -1,5 +1,5 @@
 <div>
-  <h2 class="text-center">Budget Visualizer</h2>
+  <h2 class="text-center heading">Budget Visualizer</h2>
   <div>
     <div class="d-flex justify-content-center mb-1">
       <div class="card w-75 text-white bg-success">
@@ -8,7 +8,7 @@
         </div>
       </div>
     </div>
-    <div class="d-flex justify-content-center my-2">
+    <div class="d-flex justify-content-center mt-2 mb-3">
       <div style="border-radius: 5px"  class="w-75 pt-3 text-white justify-content-center d-flex" [ngClass]="{'bg-success': budgetLeft>=0, 'bg-danger': budgetLeft < 0}">
         <div class="d-flex gap-2">
           <label *ngIf="budgetLeft>0" class="">Budget Left:</label>
@@ -18,7 +18,7 @@
       </div>
     </div>
     <div class="text-center">
-          <label class="lblSet">Set Budget</label>
+          <label class="">Set Budget</label>
           <input  style="margin: 0 auto" [(ngModel)]="maxBudget" (ngModelChange)="calculateLeftBudget()"
                   class="form-control w-50" type="number" placeholder="max Budget">
     </div>

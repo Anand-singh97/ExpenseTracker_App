@@ -9,9 +9,12 @@ h1{
 
 .expense-card{
   box-shadow: 0 5px 5px rgba(246, 127, 127, 0.8);
+  margin-bottom: 30px;
 }
 .income-card{
   box-shadow: 0 5px 5px rgba(142, 239, 172, 0.8);
+  margin-bottom: 30px;
+  margin-top: 50px;
 }
 .balance-card{
   box-shadow: 0 5px 5px rgba(110, 146, 245, 0.8);
