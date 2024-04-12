@@ -1,0 +1,64 @@
+<div class="position-relative">
+  <div [ngClass]="{'blur':newCategoryWindowActive}" class="category-container pt-3">
+    <div class="d-flex align-content-center justify-content-between mx-2">
+      <h1>Categories</h1>
+      <button (click)="openNewCategoryWindow()" class="btn btn-success">+ New Category</button>
+    </div>
+    <div>
+      <div class="my-3">
+        <input [(ngModel)]="filterText" (input)="filterCategories()" type="text"
+               class="form-control" placeholder="search categories" />
+      </div>
+      <table class="table">
+        <thead class="thead-dark">
+        <tr>
+          <th class="text-center" scope="col">#</th>
+          <th class="text-center" scope="col">Category</th>
+          <th class=" text-center" scope="col">Type</th>
+          <th class="text-center" scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let item of categoriesCopy; let i = index">
+          <td>{{i + 1}}</td>
+          <td [class.text-decoration-line-through]="!item.isVisible"
+              [class.text-decoration-none]="item.isVisible">{{item.name}}</td>
+          <td *ngIf="item.typeId === 1">Income</td>
+          <td *ngIf="item.typeId === 2">Expense</td>
+          <td class="d-flex gap-2">
+            <button (click)="btn_Edit_Click(item.id!)" class="btn btn-outline-primary">Edit</button>
+            <button (click)="btn_hideCategory_Click(item)"
+                    class="btn btn-outline-primary">{{item.isVisible ? 'Hide' : 'Show'}}</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="newCategory-container" *ngIf="newCategoryWindowActive">
+    <h1>{{isAddACategoryActive ? 'Create a new Category' : 'Update Category'}}</h1>
+    <div>
+      <div *ngIf="isAddACategoryActive" class="d-flex justify-content-center mb-3">
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <button (click)="toggleSelectionInNewWindow('income')"
+                  class="btn btn-outline-info" [class.active]="isIncomeSelected">
+            <input type="radio" name="options" id="option1" autocomplete="off"> Income
+          </button>
+          <button (click)="toggleSelectionInNewWindow('expense')"
+                  class="btn btn-outline-info" [class.active]="isExpenseSelected">
+            <input type="radio" name="options" id="option2" autocomplete="off"> Expense
+          </button>
+        </div>
+      </div>
+      <div *ngIf="isEditACategoryActive">
+        <p>{{selectedCategory?.typeId === 1 ? 'Income' : 'Expense'}}</p>
+      </div>
+      <form class="d-flex flex-column gap-3" [formGroup]="categoryForm">
+        <app-input-component [control]="title" name="title" type="text" placeholder="title"  ></app-input-component>
+        <button (click)="addNewCategory()" [disabled]="categoryForm.invalid"
+                class="btn btn-success" type="submit">Submit</button>
+        <button (click)="newCategoryWindowActive = false" class="btn btn-outline-success" type="button">Cancel</button>
+      </form>
+    </div>
+  </div>
+</div>

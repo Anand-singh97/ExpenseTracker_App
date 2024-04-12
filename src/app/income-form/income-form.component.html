@@ -17,7 +17,7 @@
           <div class="d-flex gap-3 align-content-center">
             <select [formControl]="category" class="bg-white form-control" name="category" id="category">
               <ng-container *ngFor="let item of categories">
-                <option  *ngIf="item.typeId === 1" [value]="item.id">{{item.name}}</option>
+                <option  *ngIf="item.typeId === 1 && item.isVisible" [value]="item.id">{{item.name}}</option>
               </ng-container>
             </select>
           </div>

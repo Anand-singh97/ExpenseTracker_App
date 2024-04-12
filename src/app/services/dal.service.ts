@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {TransactionService} from "./transaction.service";
-import {ICategories, ITransaction, IType} from "../../model/model";
+import {ICategories, ITransaction} from "../../model/model";
 import {BehaviorSubject} from "rxjs";
 
 @Injectable({
@@ -18,6 +18,105 @@ export class DALService
   }
   getCurrMonth(){
     return this.monthSubject.asObservable();
+  }
+
+  updateCategory(category: ICategories): Promise<void>
+  {
+    return new Promise((resolve, reject) => {
+      if(!TransactionService.db){
+        reject('Database not initialized');
+      }
+      else
+      {
+        const transaction = TransactionService.db.transaction(["categories"], "readwrite");
+        transaction.onerror = (event) => console.log("Error: error in update transaction " + event);
+
+        const transactionStore = transaction.objectStore("categories");
+
+        const req = transactionStore.put(category);
+        req.onsuccess = ()=>{
+          console.log('Success: category updated successfully');
+          resolve();
+        }
+        req.onerror = (event)=>{
+          console.log(`Error: error in update ${event}`);
+          reject(event);
+        }
+      }
+    });
+  }
+
+  addCategory(category: ICategories): Promise<void>
+  {
+    return new Promise<void>((resolve, reject) => {
+      if (!TransactionService.db) {
+        reject("Database is not initialized.");
+        return;
+      }
+
+      const transaction = TransactionService.db.transaction(["categories"], "readwrite");
+
+      transaction.oncomplete = () => {
+        resolve();
+      };
+
+      transaction.onerror = (event) => {
+        reject(event);
+      };
+
+      const categories = transaction.objectStore("categories");
+      const request = categories.add(category);
+
+      request.onsuccess = () => {
+        console.log("New category added successfully");
+      };
+
+      request.onerror = (event) => {
+        console.error("Error adding new transaction", event);
+        reject(event); // Reject the promise if there's an error adding the transaction
+      };
+    });
+  }
+
+  getCategory(id: number) : Promise<ICategories | null>
+  {
+    return new Promise<ICategories | null>((resolve, reject) => {
+      if (!TransactionService.db) {
+        reject("Database is not initialized.");
+        return;
+      }
+
+      const transaction = TransactionService.db.transaction(["categories"], "readonly");
+
+      transaction.oncomplete = () => {
+        // Transaction completed successfully
+      };
+
+      transaction.onerror = (event) => {
+        console.error("Error: error in selecting a transaction ", event);
+        reject(event);
+      };
+
+      const transactionStore = transaction.objectStore("categories");
+      const request = transactionStore.get(id);
+
+      request.onsuccess = (event) => {
+        const result = (event.target as IDBRequest).result;
+        if(result)
+        {
+          resolve(result);
+        }
+        else
+        {
+          reject(new Error('Review not found.'))
+        }
+      };
+
+      request.onerror = (event) => {
+        console.error("Error finding transaction", event);
+        reject(event);
+      };
+    });
   }
 
   getAllCategories(): Promise<ICategories[]>
@@ -103,7 +202,6 @@ export class DALService
         })
       })
     }
-    console.log(res);
     return res;
   }
 

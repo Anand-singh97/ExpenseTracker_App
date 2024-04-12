@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {TransactionListComponent} from "../transaction-list/transaction-list.component";
-import {ICategories, ITransaction, IType} from "../../model/model";
+import {ICategories, ITransaction} from "../../model/model";
 import {InputComponentComponent} from "../input-component/input-component.component";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {DALService} from "../services/dal.service";
@@ -63,7 +63,7 @@ export class IncomeFormComponent implements OnInit
   title = new FormControl('', [Validators.required]);
   amount = new FormControl('',
     [Validators.required, Validators.min(1)]);
-  category = new FormControl(1);
+  category = new FormControl(4);
   date = new FormControl(new Date().toLocaleDateString('en-CA')
       .split('T')[0], [Validators.required]);
   comments = new FormControl('');

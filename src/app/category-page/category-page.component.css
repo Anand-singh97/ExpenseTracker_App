@@ -1,0 +1,13 @@
+.blur{
+  filter: blur(5px);
+  pointer-events: none;
+}
+
+.newCategory-container{
+  position: absolute;
+  top:300px;
+  left: 12%;
+  padding: 20px;
+  border-radius: 20px;
+  background-color: #f2f8eb;
+}

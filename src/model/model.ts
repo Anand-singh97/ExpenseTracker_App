@@ -19,7 +19,8 @@ export interface IType
 export interface ICategories{
   name: string,
   typeId: number
-  id?: number
+  id?: number,
+  isVisible: boolean
 }
 
 export const typesData: Array<IType> = [{type: "Income"}, {type: "Expense"}];
@@ -43,22 +44,22 @@ export const transactionsData: Array<ITransaction> = [
   {title: "walmart grocery", amount:300, typeId: 2, categoryId: 10, date:new Date("2024-3-6"), comment:"grocery shopping."},
 ];
 export const categoriesData: Array<ICategories> = [
-  {name: 'Salary', typeId: 1},
-  {name: 'Freelancing', typeId: 1},
-  {name: 'Investments', typeId: 1},
-  {name: 'Stocks', typeId: 1},
-  {name: 'Bitcoin', typeId: 1},
-  {name: 'BankTransfer', typeId: 1}, //6
-  {name: 'Youtube', typeId: 1},
-  {name: 'OtherIncome', typeId: 1},
-  {name: 'Education', typeId: 2},
-  {name: 'Groceries', typeId: 2},
-  {name: 'Health', typeId: 2},
-  {name: 'Subscriptions', typeId: 2},
-  {name: 'Takeaways', typeId: 2},
-  {name: 'Clothing', typeId: 2},
-  {name: 'Travelling', typeId: 2},
-  {name: 'BankTransfer', typeId: 2},
-  {name: 'Electronics', typeId: 2}, //17
-  {name: 'OtherExpense', typeId: 2},
+  {name: 'Salary', typeId: 1, isVisible: true},
+  {name: 'Freelancing', typeId: 1, isVisible: true},
+  {name: 'Investments', typeId: 1, isVisible: true},
+  {name: 'Stocks', typeId: 1, isVisible: true},
+  {name: 'Bitcoin', typeId: 1, isVisible: true},
+  {name: 'BankTransfer', typeId: 1, isVisible: true}, //6
+  {name: 'Youtube', typeId: 1, isVisible: true},
+  {name: 'OtherIncome', typeId: 1, isVisible: true},
+  {name: 'Education', typeId: 2, isVisible: true},
+  {name: 'Groceries', typeId: 2, isVisible: true},
+  {name: 'Health', typeId: 2, isVisible: true},
+  {name: 'Subscriptions', typeId: 2, isVisible: true},
+  {name: 'Takeaways', typeId: 2, isVisible: true},
+  {name: 'Clothing', typeId: 2, isVisible: true},
+  {name: 'Travelling', typeId: 2, isVisible: true},
+  {name: 'BankTransfer', typeId: 2, isVisible: true},
+  {name: 'Electronics', typeId: 2, isVisible: true}, //17
+  {name: 'OtherExpense', typeId: 2, isVisible: true},
 ]

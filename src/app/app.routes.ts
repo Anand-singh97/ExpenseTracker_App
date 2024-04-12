@@ -6,6 +6,7 @@ import {TransactionsPageComponent} from "./transactions-page/transactions-page.c
 import {UpdateTransactionComponent} from "./update-transaction/update-transaction.component";
 import {DeleteTransactionComponent} from "./delete-transaction/delete-transaction.component";
 import {AboutPageComponent} from "./about-page/about-page.component";
+import {CategoryPageComponent} from "./category-page/category-page.component";
 export const routes: Routes = [
   {path:'home', component: HomePageComponent},
   {path:'', component: HomePageComponent},
@@ -19,5 +20,6 @@ export const routes: Routes = [
     ]
   },
   {path:'deleteTransaction/:id', component: DeleteTransactionComponent},
+  {path:'categories', component: CategoryPageComponent},
   {path:'about', component: AboutPageComponent}
 ];
